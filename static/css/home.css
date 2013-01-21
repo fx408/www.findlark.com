@@ -12,6 +12,7 @@
 	display:none;
 }
 
+/* Navigation */
 #nav{
 	display:block; z-index:9009; left:80px; height:35px; line-height:35px;
 }
@@ -28,17 +29,30 @@
 #nav .avatar{position:absolute; right:3px; top:3px; box-shadow: -1px -1px 2px #aaa;}
 #nav .avatar img{border:0px; cursor:pointer}
 
-.input_speak{
-	width:320px;
-	height:130px;
-	padding-left:5px;
+/* tab */
+.tab{
+	height:40px;
+	line-height: 40px;
+	background-color: #ddd;
+	background: -webkit-linear-gradient(#fff, #eaeaea);
+	background: -moz-linear-gradient(#fff, #eaeaea);
 }
-.speak{height:22px; line-height:22px; margin:3px; text-align:right}
-.input_speak .ibox{width:200px;}
-.speak_alert{margin:5px 0px; color:#FF335B}
+.tab ul li{
+	float:left;
+	width: 65px;
+	text-align:center;
+	display:none
+}
 
-/*friend list*/
-.friend{height:360px; overflow-x:hidden; overflow-y:scroll; padding-top:5px}
+.tab ul li.current{
+	display:block;
+	background-color: #fff;
+	background: -webkit-linear-gradient(#eaeaea, #fff);
+	background: -moz-linear-gradient(#eaeaea, #fff);
+}
+
+/* friend list */
+.friend{height:360px; overflow-x:hidden; overflow-y:auto; padding-top:5px}
 
 .friend_list, .myself, .please_login, .setting{display:none}
 
@@ -61,4 +75,16 @@
 
 .reg_item{text-align:right}
 
+/* say */
+#say .tab{
+	display:none;
+}
 
+.input_speak{
+	width:320px;
+	height:130px;
+	padding-left:5px;
+}
+.speak{height:22px; line-height:22px; margin:3px; text-align:right}
+.input_speak .ibox{width:200px;}
+.speak_alert{margin:5px 0px; color:#FF335B}

@@ -67,20 +67,29 @@
 	<!--消息-->
 	<div id="message" class="message">
 		<div class="tab">
-			<a href="javascript:;" name="my">我的消息</a>
-			<a href="javascript:;" name="friend">好友动态</a>
-			<a href="javascript:;">广播大厅</a>
+			<ul>
+				<li name="my"><a href="javascript:;">我的消息</a></li>
+				<li name="friend"><a href="javascript:;">好友动态</a></li>
+				<li name="broadcast" class="current"><a href="javascript:;">广播大厅</a></li>
+			</ul>
+		</div>
+		
+		<div class="message_connect">
+			
+			1212121<br>
+			1212121111
+			
 		</div>
 	</div>
 	
 	<!--说点-->
 	<div id="say" class="say">
 		<div class="tab">
-			<a href="javascript:;">说点事儿</a>
-			<a href="javascript:;">说点广播</a>
+			<ul>
+				<li><a href="javascript:;">说点事儿</a></li>
+				<li><a href="javascript:;">说点广播</a></li>
+			</ul>
 		</div>
-		
-		
 		
 		<div class="please_login">请先<a href="javascript:;" class="user_login" name="login">登录</a></div>
 	</div>
@@ -148,14 +157,18 @@
 	
 	<!--用户信息-->
 	<div id="info" class="info">
-		<div class="myself"></div>
-		
-		<div class="profile"></div>
-		
-		<div class="options">
-			<a href="javacript:;">更新资料</a>
-			<a href="javacript:;">系统设置</a>
+		<div class="info_content">
+			<div class="myself"></div>
+			
+			<div class="profile"></div>
+			
+			<div class="options">
+				<a href="javacript:;">更新资料</a>
+				<a href="javacript:;">系统设置</a>
+			</div>
 		</div>
+		
+		<div class="please_login">请先<a href="javascript:;" class="user_login" name="login">登录</a></div>
 	</div>
 </div>
 

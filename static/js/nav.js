@@ -16,12 +16,15 @@ var larkNav = function() {
 		
 	};
 	this.friendOpened = function() {
-		//if(user.uid) $("#friend .friend_list").show();
+		this.checkLogin("#friend .friend_list", "#friend .please_login");
+		
 	};
 	this.messageOpened = function() {
+		if(user.userInfo) $("#message .tab li").show();
 		
 	};
 	this.sayOpened = function() {
+		this.checkLogin("#say .tab", "#say .please_login");
 		
 	};
 	this.regOpened = function() {
@@ -31,7 +34,7 @@ var larkNav = function() {
 		
 	};
 	this.infoOpened = function() {
-		
+		this.checkLogin("#info .info_content", "#info .please_login");
 	};
 }
 
@@ -72,6 +75,16 @@ larkNav.prototype = {
 				$(this).fadeOut();
 			}
 		});
+	},
+	
+	checkLogin: function(showId, hideId) {
+		if(user.userInfo) {
+			$(showId).show();
+			$(hideId).hide();
+		} else {
+			$(showId).hide();
+			$(hideId).show();
+		}
 	}
 }
 
