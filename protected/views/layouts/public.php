@@ -14,10 +14,11 @@
 	<body>
 		<?php echo $content;?>
 		
+		
 		<div style="display:none">
 			<script type="text/javascript">
-				var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-				document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F94f327e06e5b39be23fa5d95315a897f' type='text/javascript'%3E%3C/script%3E"));
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5ba2bf410b154f773b29948e2ddcb0f4' type='text/javascript'%3E%3C/script%3E"));
 			</script>
 		</div>
 	</body>
