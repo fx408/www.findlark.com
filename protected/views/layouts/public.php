@@ -4,6 +4,9 @@
 		<title>FindLark</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="keywords" content="FindLark,BYFX,Lark">
+		<meta name="description" content="FindLark, 旅行、摄影、编程、魔方、玩乐、分享，如是人生">
+		<meta name="application-name" content="findlark">
+		<meta name="msapplication-starturl" content="http://www.findlark.com/">
 		
 		<link rel="stylesheet" type="text/css" href="/static/css/public.css">
 		<link rel="stylesheet" type="text/css" href="/static/css/<?php echo $this->id;?>.css">
