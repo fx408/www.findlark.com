@@ -19,11 +19,31 @@
 			
 			
 		</div>
+		<script type="text/javascript" src="./js/snake.js"></script>
+		<script type="text/javascript">
+			
+			$(function() {
+				
+				var snake = new larkSnake();
+				snake.init();
+				
+				$(window).keydown(function(e) {
+					console.log(e.which);
+					
+					if(e.which > 36 && e.which < 41)
+						if( Math.abs(e.which - snake.direction) != 2) snake.enterDirection = e.which;
+					
+				});
+				
+			});
+			
+		</script>
+		
 		
 		<div style="display:none">
 			<script type="text/javascript">
-			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5ba2bf410b154f773b29948e2ddcb0f4' type='text/javascript'%3E%3C/script%3E"));
+			//var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			//document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5ba2bf410b154f773b29948e2ddcb0f4' type='text/javascript'%3E%3C/script%3E"));
 			</script>
 		</div>
 	</body>
