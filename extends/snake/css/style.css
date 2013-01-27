@@ -20,5 +20,5 @@ a:visited{text-decoration:none;}
 a:hover{text-decoration:underline;}
 a:active{}
 
-
-#snake{border:10px solid #ccc; margin:0 auto;}
+#content{ width:100% }
+#snake{border:10px solid #ccc;  margin:0 auto; display:block}

@@ -1,6 +1,6 @@
 <div id="google_map" style="height:90%; width:100%"></div>
 
-<div id="nav">
+<div id="nav" style="display:none">
 	<div class="operators">
 		<ul>
 			<li name="share">分享</li>

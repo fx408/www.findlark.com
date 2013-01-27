@@ -1,15 +1,23 @@
 var larkSnake = function() {
-	this.snake = [];
 	this.enterDirection = 39; // 37:left, 39:right, 38:up , 40:down
 	this.direction = 39;
 	this.defaultX = 0;
 	this.defaultY = 0;
 	
+	this.space = 1;
+	this.eleWidth = 10;
+	this.eleHeight = 10;
+	this.row = 30;
+	this.column = 50;
+	
+	this.eleList = [];
+	this.eleLen = 0;
+	this.spaceEle = [];
+	this.snake = [];
+	
 	this.minSpeed = 500;
 	this.maxSpeed = 10;
 	this.speed = this.minSpeed;
-	
-	this.space = 1;
 	
 	this.animateTime = 0;
 	
@@ -17,23 +25,39 @@ var larkSnake = function() {
 		this.canvas = document.getElementById('snake');
 		this.ctx = this.canvas.getContext('2d');
 		
+		var ofs = {};
+		ofs.x = this.eleWidth+this.space;
+		ofs.y = this.eleHeight+this.space;
+		
 		this.ctx.globalCompositeOperation = 'lighter';
-		this.canvas.height = $(window).height() - 20;
-		this.canvas.width =  $(window).width() - 20;
+		this.canvas.height = this.row * ofs.y; //$(window).height() - 20;
+		this.canvas.width = this.column * ofs.x; //$(window).width() - 70;
 		
 		this.defaultX = this.canvas.width / 2;
 		this.defaultY = this.canvas.height / 2;
 		
-		for(var i = 0; i < 5; i++) {
-			this.snake.push(new ele());
-		}
 		
+		for(var i = 0; i < this.row; i++) {
+			for(var j = 0; j < this.column; j++) {
+				var tempEle = new ele();
+				tempEle.x = j * ofs.x;
+				tempEle.y = i * ofs.y;
+				tempEle.i = i*this.column + j;
+				this.eleList.push(tempEle);
+			}
+		}
+		this.eleLen = this.eleList.length;
+		
+		for(var i = 0; i < 5; i++) {
+			this.snake.push(this.eleList[i]);
+		}
 		this.run();
 	};
 	
 	this.run = function() {
 		var _this = this;
 		
+		this.drawFood();
 		this.update();
 		this.check();
 		this.draw();
@@ -53,26 +77,23 @@ larkSnake.prototype = {
 };
 
 larkSnake.prototype.update = function() {
-	var tempEle = new ele(), ofs = {}, poor = this.direction-38;
-	
-	ofs.x = this.snake[0].w+this.space;
-	ofs.y = this.snake[0].h+this.space;
-	
+	var last = this.snake.pop(), i = 0, poor = this.direction-38;
 	if(Math.abs(poor) == 1) {
-		tempEle.x = this.snake[0].x + poor*ofs.x;
-		tempEle.y = this.snake[0].y;
+		i = last.i + poor;
+		
+		if(last.i % this.column == 0 && poor < 0) { // 左边界
+			i += this.column;
+		} else if(i % this.column == 0 && poor > 0) { // 右边界
+			i -= this.column;
+		}
 	} else {
-		tempEle.y = this.snake[0].y + (poor-1)*ofs.y;
-		tempEle.x = this.snake[0].x
+		i = last.i + (poor-1) * this.column;
+		i = (i+this.eleLen) % this.eleLen;
 	}
 	
-	var mX = this.canvas.width - ofs.x, mY = this.canvas.height - ofs.y;
-	
-	tempEle.x = (tempEle.x+mX) % mX;
-	tempEle.y = (tempEle.y+mY) % mY;
-	
-	this.snake.unshift(tempEle);
-	this.snake.pop();
+	this.snake.shift();
+	this.snake.push(last);
+	this.snake.push(this.eleList[i]);
 };
 
 larkSnake.prototype.eat = function() {
@@ -99,15 +120,32 @@ larkSnake.prototype.draw = function() {
 
 larkSnake.prototype.drawEle = function(ele) {
 	var ctx = this.ctx;
-	ctx.fillStyle = "#222";
-	ctx.fillRect(ele.x, ele.y, ele.w, ele.h);
+	ctx.fillStyle = ele.color;
+	ctx.fillRect(ele.x, ele.y, this.eleWidth, this.eleHeight);
 	
+};
+
+larkSnake.prototype.drawFood = function() {
+	var food = {};
+	
+	while(true) {
+		food.x = Math.floor( Math.random()*this.column ) * this.eleWidth;
+		food.y = Math.floor( Math.random()*this.row ) * this.eleHeight;
+		
+		//for()
+		
+		break;
+	}
+	
+	food.color = "#ff0000";
+	
+	this.drawEle(food);
 };
 
 
 var ele = function() {
 	this.x = 0;
 	this.y = 0;
-	this.h = 5;
-	this.w = 5;
+	this.i = 0;
+	this.color = "#222";
 }
