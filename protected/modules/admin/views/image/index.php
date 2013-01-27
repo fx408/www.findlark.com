@@ -51,5 +51,5 @@
 	});
 </script>
 <?php
-$this->renderPartial('/_page', array('data'=>$data['pager']))
+$this->renderPartial('/_page', array('data'=>$data['pager'], 'url'=>'/admin/image/index'));
 ?>
