@@ -13,15 +13,26 @@ var larkSnake = function() {
 	this.eleList = [];
 	this.eleLen = 0;
 	this.spaceEle = [];
+	this.spaceLen = 0
 	this.snake = [];
+	this.snakeLen = 0;
+	this.food = null;
 	
-	this.minSpeed = 500;
+	this.minSpeed = 512;
 	this.maxSpeed = 10;
-	this.speed = this.minSpeed;
 	
 	this.animateTime = 0;
 	
+	this.score = 0;
+	this.level = 1;
+	
+	// init
 	this.init = function() {
+		this.score = 0;
+		this.level = 1;
+		this.enterDirection = 39;
+		this.direction = 39;
+		
 		this.canvas = document.getElementById('snake');
 		this.ctx = this.canvas.getContext('2d');
 		
@@ -30,8 +41,8 @@ var larkSnake = function() {
 		ofs.y = this.eleHeight+this.space;
 		
 		this.ctx.globalCompositeOperation = 'lighter';
-		this.canvas.height = this.row * ofs.y; //$(window).height() - 20;
-		this.canvas.width = this.column * ofs.x; //$(window).width() - 70;
+		this.canvas.height = this.row * ofs.y;
+		this.canvas.width = this.column * ofs.x;
 		
 		this.defaultX = this.canvas.width / 2;
 		this.defaultY = this.canvas.height / 2;
@@ -48,36 +59,48 @@ var larkSnake = function() {
 		}
 		this.eleLen = this.eleList.length;
 		
-		for(var i = 0; i < 5; i++) {
-			this.snake.push(this.eleList[i]);
+		for(var i = 0; i < 15; i++) {
+			this.snakeLen = this.snake.push(this.eleList[i]);
 		}
+		
+		this.food = this.createFood();
 		this.run();
 	};
-	
-	this.run = function() {
+}
+
+larkSnake.prototype = {
+
+	run: function() {
 		var _this = this;
 		
-		this.drawFood();
 		this.update();
-		this.check();
+		if(!this.check()) {
+			this.over();
+			return false;
+		}
 		this.draw();
+		
+		var speed = Math.max( Math.ceil(this.minSpeed/this.level), this.maxSpeed );
 		
 		this.animateTime = setTimeout(function() {
 			_this.direction = _this.enterDirection;
 			_this.run();
-		}, this.speed);
-		
-	};
+		}, speed);
+	},
 	
-}
-
-larkSnake.prototype = {
+	over: function() {
+		
+		alert('Game Over! Your score:'+this.score);
+		
+		clearTimeout(this.animateTime);
+	}
 	
 	
 };
 
+// 更新位置，让 snake 移动
 larkSnake.prototype.update = function() {
-	var last = this.snake.pop(), i = 0, poor = this.direction-38;
+	var last = this.snake[this.snakeLen-1], i = 0, poor = this.direction-38;
 	if(Math.abs(poor) == 1) {
 		i = last.i + poor;
 		
@@ -92,54 +115,149 @@ larkSnake.prototype.update = function() {
 	}
 	
 	this.snake.shift();
-	this.snake.push(last);
 	this.snake.push(this.eleList[i]);
 };
 
+// 遇到食物，吃之
 larkSnake.prototype.eat = function() {
+	var tempEle = new ele(), i = this.snake[0].i;
 	
+	this.snakeLen = this.snake.unshift(this.eleList[i]);
 	
+	this.score++;
+	this.level = Math.ceil( this.score / 10 );
+	
+	this.food = this.createFood();
 };
 
+// 检测 相撞
 larkSnake.prototype.check = function() {
+	var last = this.snake[this.snakeLen-1];
 	
+	if(last.i == this.food.i) this.eat();
 	
+	for(var i = 0; i < (this.snakeLen-1); i++) {
+		if(last.i == this.snake[i].i) return false;
+	}
 	
-	
+	return true;
 };
 
+// 绘制
 larkSnake.prototype.draw = function() {
 	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	
-	for(var i = 0, l = this.snake.length; i < l; i++) {
-		this.drawEle(this.snake[i]);
-		
+	var t = 0, ofs = {};
+	ofs.x = this.eleWidth + this.space;
+	ofs.y = this.eleHeight + this.space;
+	// 判断转向
+	for(var i = 0; i < this.snakeLen; i++) {
+		t = 0;
+		if(i > 0 && i < (this.snakeLen-1)) {
+			if(this.snake[i-1].x == this.snake[i].x && this.snake[i].x == this.snake[i+1].x) t = 0;
+			else if(this.snake[i-1].y == this.snake[i].y && this.snake[i].y == this.snake[i+1].y) t = 0;
+			
+			else if(this.snake[i+1].x == this.snake[i].x) {
+				if(this.snake[i].y > this.snake[i+1].y) {
+					t = this.snake[i-1].x < this.snake[i].x ? 1 : 2;
+				} else {
+					t = this.snake[i-1].x > this.snake[i].x ? 3 : 4;
+				}
+			} else if(this.snake[i-1].x == this.snake[i].x) {
+				if(this.snake[i].y > this.snake[i-1].y) {
+					t = this.snake[i+1].x < this.snake[i].x ? 1 : 2;
+				} else {
+					t = this.snake[i+1].x > this.snake[i].x ? 3 : 4;
+				}
+			}
+			
+			// 边界判断
+			if(t != 0) {
+				
+				if( Math.abs(this.snake[i+1].x - this.snake[i].x) > ofs.x || Math.abs(this.snake[i-1].x - this.snake[i].x) > ofs.x ) {
+					if(t == 1) t = 2;
+					else if(t == 2) t = 1;
+					else if(t == 3) t = 4;
+					else if(t == 4) t = 3;
+				}
+				
+				if( Math.abs(this.snake[i+1].y - this.snake[i].y) > ofs.y || Math.abs(this.snake[i-1].y - this.snake[i].y) > ofs.y ) {
+					if(t == 1) t = 4;
+					else if(t == 2) t = 3;
+					else if(t == 3) t = 2;
+					else if(t == 4) t = 1;
+				}
+			}
+		}
+
+		this.drawEle(this.snake[i], i, t);
 	}
 	
+	this.drawEle(this.food);
 };
 
-larkSnake.prototype.drawEle = function(ele) {
+// 绘制元素
+larkSnake.prototype.drawEle = function(ele, i, t) {
 	var ctx = this.ctx;
 	ctx.fillStyle = ele.color;
-	ctx.fillRect(ele.x, ele.y, this.eleWidth, this.eleHeight);
 	
+	if(i == (this.snakeLen-1)) ctx.fillStyle = '#09f';
+	
+	ctx.beginPath();
+	switch(t) {
+		case 1:
+			ctx.moveTo(ele.x, ele.y);
+			ctx.arc(ele.x, ele.y, this.eleWidth, 0, Math.PI/2);
+			ctx.lineTo(ele.x, ele.y+this.eleHeight);
+			ctx.lineTo(ele.x, ele.y);
+			break;
+		case 2:
+			ctx.moveTo(ele.x+this.eleWidth, ele.y);
+			ctx.arc(ele.x+this.eleWidth, ele.y, this.eleWidth, Math.PI*0.5, Math.PI);
+			ctx.lineTo(ele.x+this.eleWidth, ele.y);
+			ctx.lineTo(ele.x+this.eleWidth, ele.y+this.eleHeight);
+			break;
+		case 3:
+			ctx.moveTo(ele.x+this.eleWidth, ele.y+this.eleHeight);
+			ctx.arc(ele.x+this.eleWidth, ele.y+this.eleHeight, this.eleWidth, Math.PI*1.5, Math.PI*1, true);
+			ctx.lineTo(ele.x+this.eleWidth, ele.y+this.eleHeight);
+			ctx.lineTo(ele.x+this.eleWidth, ele.y);
+			break;
+		case 4:
+			ctx.moveTo(ele.x, ele.y+this.eleHeight);
+			ctx.arc(ele.x, ele.y+this.eleHeight, this.eleWidth, 0, Math.PI*1.5, true);
+			ctx.lineTo(ele.x, ele.y+this.eleHeight);
+			ctx.lineTo(ele.x+this.eleWidth, ele.y+this.eleHeight);
+			break;
+		default:
+			ctx.fillRect(ele.x, ele.y, this.eleWidth, this.eleHeight);
+			break;
+	}
+	ctx.fill();
 };
 
-larkSnake.prototype.drawFood = function() {
-	var food = {};
+// 创建食物
+larkSnake.prototype.createFood = function() {
+	var spaceEle = [], has = false, tempList = {};
 	
-	while(true) {
-		food.x = Math.floor( Math.random()*this.column ) * this.eleWidth;
-		food.y = Math.floor( Math.random()*this.row ) * this.eleHeight;
-		
-		//for()
-		
-		break;
+	for(var j = 0, l = this.snake.length; j < l; j++) {
+		tempList[this.snake[j].i] = 1;
 	}
 	
+	for(var i = 0; i < this.eleLen; i++) {
+		if(!tempList[i]) spaceEle.push(this.eleList[i]);
+	}
+	
+	var n = Math.floor( Math.random() * spaceEle.length );
+	
+	var food = new ele();
+	
+	for(var k in spaceEle[n]) {
+		food[k] = spaceEle[n][k];
+	}
 	food.color = "#ff0000";
 	
-	this.drawEle(food);
+	return food;
 };
 
 
