@@ -12,8 +12,8 @@ $(function() {
 
 
 var loveObject = function() {
-	this.start = {x:50, y:250};
-	this.proportion = 1/2;
+	this.start = {x:10, y:50};
+	this.proportion = 1/3;
 	this.point = [];
 	this.eleList = [];
 	
@@ -38,12 +38,12 @@ var loveObject = function() {
 
 loveObject.prototype.drawFont = function() {
 	ctx.fillStyle = "#333";
-	ctx.font='italic 100px sans-serif ';
+	ctx.font='italic 400px Courier New,sans-serif ';
   ctx.textBaseline='top';
   
-  ctx.fillText('Love You Forever.', this.start.x, this.start.y);
+  ctx.fillText('Love', this.start.x, this.start.y);
   
-  ctx.fillText('Love You Forever.', this.start.x, this.start.y);
+  //ctx.fillText('Love You Forever.', this.start.x, this.start.y);
 };
 
 loveObject.prototype.getCanvasData = function() {
@@ -123,7 +123,7 @@ loveObject.prototype.update = function() {
 				this.eleList[i].x -= this.eleList[i].speed * poor.x/poor.absX;
 			} 
 			if(poor.absY > this.eleList[i].speed) {
-				this.eleList[i].y -= this.eleList[i].speed * poor.y/poor.absX;
+				this.eleList[i].y -= this.eleList[i].speed * poor.y/poor.absY;
 			}
 		}
 	}
@@ -137,7 +137,7 @@ var point = function(n) {
 var ele = function(len) {
 	this.x = Math.floor( Math.random()*canvas.width );
 	this.y = Math.floor( Math.random()*canvas.height );
-	this.speed = Math.floor( Math.random()*3 ) + 1;
+	this.speed = Math.floor( Math.random()*4 ) + 4;
 	
 	this.n = Math.floor( Math.random()*len ); // 移动目标
 	
