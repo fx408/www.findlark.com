@@ -5,9 +5,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		
 		<script type="text/javascript" src="/static/js/jquery-1.7.1.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->params->staticUrl;?>/css/public.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/public.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/admin.css">
 	</head>
 	<body style="margin:10px;">
 		<?php echo $content;?>
+		
+		<div class="bottom">
+			<a href="/admin">首页</a>
+		</div>
 	</body>
 </html>

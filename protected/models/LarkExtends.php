@@ -7,11 +7,13 @@
  * @property integer $id
  * @property string $title
  * @property string $path
+ * @property string $thumb
  */
 class LarkExtends extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
 	 * @return LarkExtends the static model class
 	 */
 	public static function model($className=__CLASS__)
@@ -35,11 +37,12 @@ class LarkExtends extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, path', 'required'),
+			array('title, path, thumb', 'required'),
 			array('title, path', 'length', 'max'=>200),
+			array('thumb', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, path', 'safe', 'on'=>'search'),
+			array('id, title, path, thumb', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +66,7 @@ class LarkExtends extends CActiveRecord
 			'id' => 'ID',
 			'title' => 'Title',
 			'path' => 'Path',
+			'thumb' => 'Thumb',
 		);
 	}
 
@@ -80,6 +84,7 @@ class LarkExtends extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('path',$this->path,true);
+		$criteria->compare('thumb',$this->thumb,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

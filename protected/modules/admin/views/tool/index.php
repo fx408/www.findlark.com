@@ -3,6 +3,7 @@
 		<tr>
 			<th>标题</th>
 			<th>路径</th>
+			<th>快照</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -11,6 +12,7 @@
 		<tr>
 			<td><a href="/extends/<?php echo $item->path;?>" target="_blank"><?php echo $item->title;?></a></td>
 			<td><?php echo $item->path;?></td>
+			<td><img src="<?php echo $item->thumb;?>" width="180"></td>
 			<td>
 				<a href="/admin/tool/modify/id/<?php echo $item->id;?>" class="modify">编辑</a>
 				<a href="/admin/tool/del/id/<?php echo $item->id;?>" class="del">删除</a>

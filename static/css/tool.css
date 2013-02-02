@@ -1,1 +1,11 @@
-.extends_list{width:960px; width:80%; margin:10px auto;}
+.extends_list{width:100%;}
+
+.extend{width:200px; margin:10px;}
+
+.extend:hover{ box-shadow:0px 0px 10px #333;}
+.extend:active{ box-shadow:0px 0px 10px #777; border:0px;}
+
+.extend-img{width:180px; margin:10px;}
+.extend-img img{width:180px;}
+
+.extend-link{text-align:center}

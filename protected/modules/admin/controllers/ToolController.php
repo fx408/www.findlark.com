@@ -12,9 +12,8 @@ class ToolController extends AdminController {
 		$request = Yii::app()->request;
 		if($request->isPostRequest) {
 			$model = LarkExtends::model();
+			$model->attributes = $request->getParam('Form');
 			$model->id = null;
-			$model->title = $request->getParam('title');
-			$model->path = $request->getParam('path');
 			$model->isNewRecord = true;
 			$model->save();
 			
@@ -42,6 +41,7 @@ class ToolController extends AdminController {
 			
 			$data->title = $request->getParam('title');
 			$data->path = $request->getParam('path');
+			$data->thumb = $request->getParam('thumb');
 			$data->save();
 			
 			$this->redirect('/admin/tool/index');

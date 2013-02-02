@@ -1,0 +1,6 @@
+body{overflow: auto;}
+
+
+input.ibox{width:240px; margin-left:3px;}
+
+.bottom{text-align:center; margin-top:20px; border-top:1px solid #ddd; padding-top:5px;}
