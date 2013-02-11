@@ -7,7 +7,7 @@ class Curl extends ExtensionsBase{
 		'type'=>'get',
 		'useCookie'=>false,
 		'referer'=>'http://www.findlark.com',
-		'header'=>1,
+		'header'=>0,
 		'transfer'=>1
 	);
 
@@ -35,7 +35,7 @@ class Curl extends ExtensionsBase{
 
 		if($params['type'] == 'post') {
 			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params['data']);
 		} else {
 			curl_setopt($ch, CURLOPT_HTTPGET, 1);
 		}

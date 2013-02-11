@@ -84,7 +84,7 @@ var loveObject = function() {
 			if(i >= l) i = 0;
 			
 			var sx = _this.start.x - 220;
-			var sy = _this.start.y - 97.5 
+			var sy = _this.start.y - 97.5;
 			
 			_this.moveCheck(moveLine[i].x+sx, moveLine[i].y+sy);
 		}, 80);
@@ -97,9 +97,9 @@ loveObject.prototype.drawFont = function() {
 	/*
 	ctx.fillStyle = "#333";
 	ctx.font='italic 400px Lucida Handwriting,Microsoft Yahei,sans-serif ';
-  ctx.textBaseline='top';
-  ctx.fillText('Love', this.start.x, this.start.y);
-  */
+	ctx.textBaseline='top';
+	ctx.fillText('Love', this.start.x, this.start.y);
+	*/
   
   ctx.drawImage(bgImg, this.start.x, this.start.y);
 };

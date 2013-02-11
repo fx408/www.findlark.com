@@ -99,6 +99,8 @@ return array(
 		'baseUrl'=>'http://www.findlark.com',
 		'adminEmail'=>'webmaster@example.com',
 		'socketHost'=>'socket.findlark.com',
-		'socketPort'=>'9091'
+		'socketPort'=>'9091',
+		'gmailAddress'=>'fx4084@gmail.com',
+		'gmailPassword'=>'fx19890410'
 	),
 );
