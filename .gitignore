@@ -19,6 +19,7 @@ assets/*
 upload/*
 download/*
 protected/runtime/*
+protected/config/main-local.php
 
 # External tool builders
 .externalToolBuilders/
