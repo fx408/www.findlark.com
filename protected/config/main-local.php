@@ -101,6 +101,6 @@ return array(
 		'socketHost'=>'socket.findlark.com',
 		'socketPort'=>'9091',
 		'gmailAddress'=>'fx4084@gmail.com',
-		'gmailPassword'=>'fx19890410'
+		'gmailPassword'=>'000000'
 	),
 );
