@@ -28,6 +28,7 @@ $(function() {
 			} else {
 				info(data.msg, true);
 				$("#loginInfo").css("color", "red").html(data.msg);
+				$("#loginButton").removeAttr("disabled");
 			}
 		}, 'json');
 		
@@ -35,7 +36,15 @@ $(function() {
 	
 	$("#loginScript").load(function() {
 		if(__pc__login && __pc__login.code == 'A00000') {
-			info('登录成功!3秒后自动转到爱奇艺，若未跳转，请点击下方连接。');
+			info('登录成功!<span style="color:red" id="Countdown">3</span>秒后自动转到爱奇艺，若未跳转，请点击下方连接。');
+			var i = 4, time = 0;
+			
+			time = setInterval(function() {
+				i--;
+				if(i < 0) clearTimeout(time);
+				$("#Countdown").html(i);
+			}, 1000);
+			
 			setTimeout(function() {
 				window.location.href = $("#iqiyi").attr("href");
 			}, 3500);

@@ -9,6 +9,7 @@ class Qiyi extends ExtensionsBase{
 		return parent::model($className);
 	}
 	
+	// 发送找回密码邮件
 	public function sendFindPWMail() {
 		$params = array(
 			'type'=>'post', 
@@ -35,17 +36,17 @@ class Qiyi extends ExtensionsBase{
 		
 		$headerList = $dateList = array();
 		$allowHost = array('qiyi.com');
+		$msgCount = imap_num_msg($mailbox); 
 		
-		for($i=1; $i < 2000; $i++) {
+		for($i=1; $i <= $msgCount; $i++) {
 			$header = @ imap_header($mailbox, $i); 
-			
-			if(!$header) break;
+			if(!$header) continue;
 			
 			$num = trim($header->Msgno);
 			$date = strtotime($header->date);
-			$host = isset($header->from[0]) ? $header->from[0]->host : 'findlark.com';
+			$host = isset($header->from[0]) ? $header->from[0]->host : '';
 			
-			if(!in_array($host, $allowHost)) continue;
+			if(empty($host) || !in_array($host, $allowHost)) continue;
 			
 			$headerList[$num] = array(
 				'date'=> $date,
@@ -64,6 +65,7 @@ class Qiyi extends ExtensionsBase{
 			if($content) break;
 		}
 		
+		imap_close($mailbox);
 		$match = preg_match("#http\:\/\/passport\.iqiyi\.com\/user\/resetpwd\.php\?bcode\=(\w+)#i", $content, $array);
 		return $match && isset($array[1]) ? 'http://passport.iqiyi.com/user/resetpwd.php?bcode='.$array[1] : FALSE;
 	}
