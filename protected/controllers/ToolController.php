@@ -28,5 +28,9 @@ class ToolController extends Controller {
 		$this->render('qiyi');
 	}
 	
+	public function actionTest() {
+		
+		
+	}
 	
 }

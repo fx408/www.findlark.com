@@ -10,13 +10,20 @@ class ExtensionsBase{
 		return self::$_models[$className];
 	}
 	
-	public function __get($property) {
-		$property = ucfirst($property);
+	public function __get($name) {
+		$geter = '_get'.$name;
+		$dater = '_data'.$name;
 		
-		if(method_exists($this, '_get'.$property)) {
-			return call_user_func(array($this, '_get'.$property));
+		if(method_exists($this, $geter)) {
+			return $this->$getter();
 		}
 		
-		return isset(self::$_data['_data'.$property]) ? self::$_data['_data'.$property] : null;
+		return isset(self::$_data[$dater]) ? self::$_data[$dater] : null;
+	}
+	
+	public function __set($name, $value) {
+		
+		
+		
 	}
 }
