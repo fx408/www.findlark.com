@@ -11,10 +11,10 @@ class ExtensionsBase{
 	}
 	
 	public function __get($name) {
-		$geter = '_get'.$name;
+		$getter = '_get'.$name;
 		$dater = '_data'.$name;
 		
-		if(method_exists($this, $geter)) {
+		if(method_exists($this, $getter)) {
 			return $this->$getter();
 		}
 		

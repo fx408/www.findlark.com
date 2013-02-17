@@ -5,3 +5,7 @@
 	
 	<input type="submit" value="提交">
 </form>
+
+<div>
+	<a href="/admin/tool/index">列表</a>
+</div>

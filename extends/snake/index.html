@@ -13,28 +13,36 @@
 		<script type="text/javascript" src="./js/jquery-1.9.0.min.js"></script>
 	</head>
 	<body>
-		
 		<div id="content">
 			<canvas id="snake"></canvas>
-			
-			
 		</div>
+		<div style="text-align:center">
+			得分：<span id="score" style="color:red">0</span>
+			<!--
+			边界：<select id="boundary">
+				<option value="0">无</option>
+				<option value="1">有</option>
+			</select>
+			-->
+			<button id="start">开始</button>
+		</div>
+		
 		<script type="text/javascript" src="./js/snake.js"></script>
 		<script type="text/javascript">
-			
 			$(function() {
-				
 				var snake = new larkSnake();
 				snake.init();
+				
+				$("#start").click(function() {
+					snake.running ? snake.pause() : snake.start();
+				});
 				
 				$(window).keydown(function(e) {
 					console.log(e.which);
 					
 					if(e.which > 36 && e.which < 41)
 						if( Math.abs(e.which - snake.direction) != 2) snake.enterDirection = e.which;
-					
 				});
-				
 			});
 			
 		</script>

@@ -3,12 +3,12 @@ class Curl extends ExtensionsBase{
 	private $ip = null;
 	private $userAgent = null;
 	private $default = array(
-		'data'=>null,
-		'type'=>'get',
-		'useCookie'=>false,
+		'data'=> null,
+		'type'=> 'get',
+		'useCookie'=> false,
 		'referer'=>'http://www.findlark.com',
-		'header'=>0,
-		'transfer'=>1
+		'header'=> 0,
+		'transfer'=> 1
 	);
 
 	public static function model($className = __CLASS__) {
@@ -26,7 +26,7 @@ class Curl extends ExtensionsBase{
 		curl_setopt($ch, CURLOPT_HEADER, $params['header']);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, $params['transfer']);
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->createAgent());
-    curl_setopt($ch, CURLOPT_HTTPHEADER , array('X-FORWARDED-FOR:'.$this->createIp(), 'CLIENT-IP:'.$this->createIp()));  //构造IP
+    curl_setopt($ch, CURLOPT_HTTPHEADER , array('X-FORWARDED-FOR:'.$this->createIp(), 'CLIENT-IP:'.$this->createIp()));
 
     if($params['useCookie']) {
 			curl_setopt($ch, CURLOPT_COOKIEFILE, $this->createCookie());
@@ -64,8 +64,8 @@ class Curl extends ExtensionsBase{
 	
 	//
 	public function createCookie() {
-
-
+		
+		
 	}
 	
 	/**

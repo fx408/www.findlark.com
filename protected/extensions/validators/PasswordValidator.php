@@ -1,6 +1,5 @@
 <?php
-class PasswordValidator extends CValidator
-{
+class PasswordValidator extends CValidator {
 	public $strength;
 	
 	private $weak_pattern = '/^(?=.*[a-zA-Z0-9]).{5,}$/';
@@ -12,8 +11,7 @@ class PasswordValidator extends CValidator
 	 * @param CModel $object the object being validated
 	 * @param string $attribute the attribute being validated
 	 */
-	protected function validateAttribute($object,$attribute)
-	{
+	protected function validateAttribute($object,$attribute) {
 	    // check the strength parameter used in the validation rule of our model
 	    if ($this->strength == 'weak')
 	      $pattern = $this->weak_pattern;
@@ -35,7 +33,7 @@ class PasswordValidator extends CValidator
 	 * @return string the client-side validation script.
 	 * @see CActiveForm::enableClientValidation
 	 */
-	public function clientValidateAttribute($object,$attribute)
+	public function clientValidateAttribute($object, $attribute)
 	{
 	    // check the strength parameter used in the validation rule of our model
 	    if ($this->strength == 'weak')

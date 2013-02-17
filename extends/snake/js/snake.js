@@ -18,7 +18,7 @@ var larkSnake = function() {
 	this.snakeLen = 0;
 	this.food = null;
 	
-	this.minSpeed = 512;
+	this.minSpeed = 256;
 	this.maxSpeed = 10;
 	
 	this.animateTime = 0;
@@ -26,12 +26,25 @@ var larkSnake = function() {
 	this.score = 0;
 	this.level = 1;
 	
+	this.running = false;
+	this.boundary = 0;
+	
 	// init
 	this.init = function() {
+		this.running = false;
+		this.boundary = $("#boundary").val();
+		
 		this.score = 0;
 		this.level = 1;
 		this.enterDirection = 39;
 		this.direction = 39;
+		this.eleList = [];
+		this.eleLen = 0;
+		this.spaceEle = [];
+		this.spaceLen = 0
+		this.snake = [];
+		this.snakeLen = 0;
+		this.food = null;
 		
 		this.canvas = document.getElementById('snake');
 		this.ctx = this.canvas.getContext('2d');
@@ -47,7 +60,6 @@ var larkSnake = function() {
 		this.defaultX = this.canvas.width / 2;
 		this.defaultY = this.canvas.height / 2;
 		
-		
 		for(var i = 0; i < this.row; i++) {
 			for(var j = 0; j < this.column; j++) {
 				var tempEle = new ele();
@@ -59,17 +71,17 @@ var larkSnake = function() {
 		}
 		this.eleLen = this.eleList.length;
 		
-		for(var i = 0; i < 15; i++) {
+		for(var i = 0; i < 10; i++) {
 			this.snakeLen = this.snake.push(this.eleList[i]);
 		}
 		
 		this.food = this.createFood();
-		this.run();
 	};
 }
 
 larkSnake.prototype = {
-
+	
+	// 运行
 	run: function() {
 		var _this = this;
 		
@@ -80,7 +92,7 @@ larkSnake.prototype = {
 		}
 		this.draw();
 		
-		var speed = Math.max( Math.ceil(this.minSpeed/this.level), this.maxSpeed );
+		var speed = Math.max( Math.ceil(this.minSpeed/(this.level/10+0.9)), this.maxSpeed );
 		
 		this.animateTime = setTimeout(function() {
 			_this.direction = _this.enterDirection;
@@ -88,11 +100,24 @@ larkSnake.prototype = {
 		}, speed);
 	},
 	
-	over: function() {
-		
-		alert('Game Over! Your score:'+this.score);
-		
+	start: function() {
+		$("#start").html("暂停");
+		this.running = true;
+		this.run();
+	},
+	
+	// 暂停
+	pause: function() {
+		$("#start").html("开始");
+		this.running = false;
 		clearTimeout(this.animateTime);
+	},
+	
+	// 结束
+	over: function() {
+		this.pause();
+		alert('Game Over! Your score:'+this.score);
+		this.init();
 	}
 	
 	
@@ -126,6 +151,8 @@ larkSnake.prototype.eat = function() {
 	
 	this.score++;
 	this.level = Math.ceil( this.score / 10 );
+	
+	$("#score").html(this.score);
 	
 	this.food = this.createFood();
 };
@@ -171,9 +198,8 @@ larkSnake.prototype.draw = function() {
 				}
 			}
 			
-			// 边界判断
+			// 边界交换
 			if(t != 0) {
-				
 				if( Math.abs(this.snake[i+1].x - this.snake[i].x) > ofs.x || Math.abs(this.snake[i-1].x - this.snake[i].x) > ofs.x ) {
 					if(t == 1) t = 2;
 					else if(t == 2) t = 1;
@@ -203,31 +229,35 @@ larkSnake.prototype.drawEle = function(ele, i, t) {
 	
 	if(i == (this.snakeLen-1)) ctx.fillStyle = '#09f';
 	
+	var point = {x:0, y:0};
+	point.x = ele.x + this.eleWidth;
+	point.y = ele.y + this.eleHeight;
+	
 	ctx.beginPath();
 	switch(t) {
 		case 1:
 			ctx.moveTo(ele.x, ele.y);
 			ctx.arc(ele.x, ele.y, this.eleWidth, 0, Math.PI/2);
-			ctx.lineTo(ele.x, ele.y+this.eleHeight);
+			ctx.lineTo(ele.x, point.y);
 			ctx.lineTo(ele.x, ele.y);
 			break;
 		case 2:
-			ctx.moveTo(ele.x+this.eleWidth, ele.y);
-			ctx.arc(ele.x+this.eleWidth, ele.y, this.eleWidth, Math.PI*0.5, Math.PI);
-			ctx.lineTo(ele.x+this.eleWidth, ele.y);
-			ctx.lineTo(ele.x+this.eleWidth, ele.y+this.eleHeight);
+			ctx.moveTo(point.x, ele.y);
+			ctx.arc(point.x, ele.y, this.eleWidth, Math.PI*0.5, Math.PI);
+			ctx.lineTo(point.x, ele.y);
+			ctx.lineTo(point.x, point.y);
 			break;
 		case 3:
-			ctx.moveTo(ele.x+this.eleWidth, ele.y+this.eleHeight);
-			ctx.arc(ele.x+this.eleWidth, ele.y+this.eleHeight, this.eleWidth, Math.PI*1.5, Math.PI*1, true);
-			ctx.lineTo(ele.x+this.eleWidth, ele.y+this.eleHeight);
-			ctx.lineTo(ele.x+this.eleWidth, ele.y);
+			ctx.moveTo(point.x, point.y);
+			ctx.arc(point.x, point.y, this.eleWidth, Math.PI*1.5, Math.PI*1, true);
+			ctx.lineTo(point.x, point.y);
+			ctx.lineTo(point.x, ele.y);
 			break;
 		case 4:
-			ctx.moveTo(ele.x, ele.y+this.eleHeight);
-			ctx.arc(ele.x, ele.y+this.eleHeight, this.eleWidth, 0, Math.PI*1.5, true);
-			ctx.lineTo(ele.x, ele.y+this.eleHeight);
-			ctx.lineTo(ele.x+this.eleWidth, ele.y+this.eleHeight);
+			ctx.moveTo(ele.x, point.y);
+			ctx.arc(ele.x, point.y, this.eleWidth, 0, Math.PI*1.5, true);
+			ctx.lineTo(ele.x, point.y);
+			ctx.lineTo(point.x, point.y);
 			break;
 		default:
 			ctx.fillRect(ele.x, ele.y, this.eleWidth, this.eleHeight);

@@ -14,5 +14,8 @@
 	内容:<textarea name="Form[content]" style="width:473px; height:120px;"><?php if( isset($data) ) echo $data->content;?></textarea>
 	<br>
 	<input type="submit" value="提交">
-	<a href="/admin/mark/index">列表</a>  
 </form>
+
+<div>
+	<a href="/admin/mark/index">列表</a>
+</div>
