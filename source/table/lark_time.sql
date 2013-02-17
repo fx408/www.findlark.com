@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.7.1
+-- version 3.5.4
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 02 月 17 日 10:44
--- 服务器版本: 5.5.20
--- PHP 版本: 5.2.9-1
+-- 生成日期: 2013 年 02 月 17 日 15:36
+-- 服务器版本: 5.5.27
+-- PHP 版本: 5.3.19
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -31,9 +31,11 @@ CREATE TABLE IF NOT EXISTS `lark_time` (
   `from_id` smallint(6) NOT NULL,
   `to_id` smallint(6) NOT NULL,
   `time` int(11) NOT NULL,
-  `content` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=211 ;
+  `content` longtext,
+  PRIMARY KEY (`id`),
+  KEY `from_id` (`from_id`),
+  KEY `to_id` (`to_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2255 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
