@@ -2,7 +2,7 @@
 class CityCommand extends CConsoleCommand {
 	
 	public function actionImportCity() {
-		$cityFile = dirname(__FILE__).'/city.txt';
+		$cityFile = dirname(__FILE__).'/data/city.txt';
 		
 		$fp = fopen($cityFile, 'r');
 		$model = LarkCity::model();
