@@ -7,7 +7,7 @@ class Curl extends ExtensionsBase{
 		'type'=> 'get',
 		'useCookie'=> false,
 		'referer'=>'http://www.findlark.com',
-		'header'=> 0,
+		'header'=> 1,
 		'transfer'=> 1
 	);
 
@@ -18,6 +18,7 @@ class Curl extends ExtensionsBase{
 	// 请求
 	public function request($url, $params = array()) {
 		$params = array_merge($this->default, $params);
+		$ip = $this->createIp();
 
 		$ch = curl_init($url);
 
@@ -26,7 +27,7 @@ class Curl extends ExtensionsBase{
 		curl_setopt($ch, CURLOPT_HEADER, $params['header']);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, $params['transfer']);
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->createAgent());
-    curl_setopt($ch, CURLOPT_HTTPHEADER , array('X-FORWARDED-FOR:'.$this->createIp(), 'CLIENT-IP:'.$this->createIp()));
+    curl_setopt($ch, CURLOPT_HTTPHEADER , array('X-FORWARDED-FOR:'.$ip, 'CLIENT-IP:'.$ip));
 
     if($params['useCookie']) {
 			curl_setopt($ch, CURLOPT_COOKIEFILE, $this->createCookie());

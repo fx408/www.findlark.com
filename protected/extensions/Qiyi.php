@@ -25,7 +25,6 @@ class Qiyi extends ExtensionsBase{
 	
 	// 从邮箱获取重置密码 链接
 	public function getFindPWLink($time) {
-		date_default_timezone_set('Asia/ChongQing');
 		$mailbox = @ imap_open(
 			'{imap.gmail.com:993/imap/ssl}INBOX',
 			Yii::app()->params->gmailAddress,

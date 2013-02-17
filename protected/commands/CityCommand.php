@@ -34,13 +34,24 @@ class CityCommand extends CConsoleCommand {
 	public function actionSearch() {
 		$citys = $this->cityList();
 		
+		$i = 0;
 		foreach($citys as $fromId => $fromCode) {
 			foreach($citys as $toId => $toCode) {
 				if($fromId == $toId) continue;
 				
 				printf("Search from: %d to: %d \n", $fromId, $toId);
 				
+				$i++;
+				$sleepTime = ($i = $i % 100) == 0 ? 10 : 1;
+				sleep($sleepTime);
+				
 				$content = $this->search($fromCode, $toCode);
+				
+				if($content === false) {
+					echo "ERROR:--- \n";
+					sleep(60);
+				}
+				
 				$data = $this->parseContent($content);
 				if($data) $this->saveData($data, $fromId, $toId);
 			}
@@ -79,13 +90,14 @@ class CityCommand extends CConsoleCommand {
 		$this->requestParams['orderRequest.from_station_telecode'] = $fromCode;
 		$this->requestParams['orderRequest.to_station_telecode'] = $toCode;
 		
-		$params = array('referer'=>'https://www.google.com');
+		$params = array('referer'=>'https://www.google.com.hk');
 		
 		$url = $this->requestUrl.'?'.http_build_query($this->requestParams);
 		$content = Curl::model()->request($url, $params);
-		
+		$content = preg_replace("#.*?\{#is", "{", $content);
 		$content = CJSON::decode($content);
-		return $content['datas'];
+		
+		return isset($content['datas']) ? $content['datas'] : false;
 	}
 	
 	private function parseContent($content) {
@@ -105,8 +117,8 @@ class CityCommand extends CConsoleCommand {
 		if(empty($times)) return false;
 		sort($times);
 		
-		
-		return array(array_pop($times) ,$content);
+		$content = preg_replace("#\<.*?\>#", "", $content);
+		return array(array_pop($times), $content);
 	}
 	
 	private function saveData($data, $fromId, $toId) {
