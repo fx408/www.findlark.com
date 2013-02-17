@@ -60,6 +60,7 @@ class CityCommand extends CConsoleCommand {
 		echo '->END;';
 	}
 	
+	// 城市列表
 	private function cityList() {
 		$data = LarkCity::model()->findAll();
 		
@@ -71,6 +72,7 @@ class CityCommand extends CConsoleCommand {
 		return $list;
 	}
 	
+	// 查询地址 和 参数
 	private $requestUrl = 'http://dynamic.12306.cn/otsquery/query/queryRemanentTicketAction.do';
 	private $requestParams = array(
 		'method'=>'queryLeftTicket',
@@ -85,6 +87,7 @@ class CityCommand extends CConsoleCommand {
 		'orderRequest.start_time_str'=>'00:00--24:00'
 	);
 	
+	// 查询
 	private function search($fromCode, $toCode) {
 		$this->requestParams['orderRequest.train_date'] = date('Y-m-d', time()+86400);
 		$this->requestParams['orderRequest.from_station_telecode'] = $fromCode;
@@ -100,6 +103,7 @@ class CityCommand extends CConsoleCommand {
 		return isset($content['datas']) ? $content['datas'] : false;
 	}
 	
+	// 初步解析内容
 	private function parseContent($content) {
 		if(empty($content)) return false;
 		if(strpos($content, '\\n') === false) return false;
@@ -122,6 +126,7 @@ class CityCommand extends CConsoleCommand {
 		return array(array_pop($times), $content);
 	}
 	
+	// 保存数据
 	private function saveData($data, $fromId, $toId) {
 		$model = LarkTime::model();
 		
