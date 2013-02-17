@@ -48,7 +48,7 @@ class CityCommand extends CConsoleCommand {
 				$content = $this->search($fromCode, $toCode);
 				
 				if($content === false) {
-					echo "ERROR:--- \n";
+					echo "SLEEP 60(s) \n";
 					sleep(60);
 				}
 				
