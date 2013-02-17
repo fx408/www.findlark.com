@@ -117,7 +117,8 @@ class CityCommand extends CConsoleCommand {
 		if(empty($times)) return false;
 		sort($times);
 		
-		$content = preg_replace("#\<.*?\>#", "", $content);
+		$content = preg_replace("#\<.*?\>#", '', $content);
+		$content = str_replace('&nbsp;', '', $content);
 		return array(array_pop($times), $content);
 	}
 	
