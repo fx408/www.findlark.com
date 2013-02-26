@@ -12,6 +12,7 @@ type JrBase struct {
 	Version    string
 	postParams map[string]interface{}
 	getParams  map[string]interface{}
+	pathParams []string
 }
 
 var (

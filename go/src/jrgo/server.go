@@ -27,10 +27,12 @@ func init() {
 		JrServer.UrlRegulars = append(JrServer.UrlRegulars, &UrlRegular{k, v})
 	}
 }
+
 func (this *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	this.Run(w, r)
 	return
 }
+
 func (this *Server) Run(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/favicon.ico" {
 		return
@@ -38,7 +40,7 @@ func (this *Server) Run(w http.ResponseWriter, r *http.Request) {
 
 	r.ParseMultipartForm(1024 * 1024 * 2) // 2M
 
-	path := this.ParsePath(r.URL.Path)
+	path := this.ReplacePath(r.URL.Path)
 	JrRouting.Call(path)
 
 	fmt.Println(" path: ", r.URL.Path)
@@ -57,7 +59,10 @@ func (this *Server) StartServer() {
 	}
 }
 
-func (this *Server) ParsePath(path string) string {
+/** 
+ * 根据URL 规则，替换路径
+ */
+func (this *Server) ReplacePath(path string) string {
 	var r *regexp.Regexp
 
 	for _, reg := range this.UrlRegulars {
