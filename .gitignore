@@ -19,6 +19,8 @@ assets/*
 upload/*
 download/*
 protected/runtime/*
+go/pkg
+go/bin
 
 # External tool builders
 .externalToolBuilders/

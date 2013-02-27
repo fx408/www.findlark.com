@@ -38,10 +38,17 @@ func (this *Server) Run(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	r.ParseMultipartForm(1024 * 1024 * 2) // 2M
+	//r.ParseMultipartForm(1024 * 1024 * 2) // 2M
+	r.ParseForm()
+	params := make(map[string]string)
+	ctx := &Request{ResponseWriter: w, Request: r, Params: params}
 
 	path := this.ReplacePath(r.URL.Path)
-	JrRouting.Call(path)
+	call := JrRouting.Call(path, ctx)
+
+	if call != true {
+		http.NotFound(w, r)
+	}
 
 	fmt.Println(" path: ", r.URL.Path)
 	fmt.Println(" Scheme: ", r.URL.Scheme)
@@ -51,6 +58,9 @@ func (this *Server) Run(w http.ResponseWriter, r *http.Request) {
 
 }
 
+/**
+ * 监听端口， 开启HTTP服务
+ */
 func (this *Server) StartServer() {
 
 	err := http.ListenAndServe(":8082", this)
@@ -66,7 +76,7 @@ func (this *Server) ReplacePath(path string) string {
 	var r *regexp.Regexp
 
 	for _, reg := range this.UrlRegulars {
-		r, _ = regexp.Compile(`\d+`)
+		r, _ = regexp.Compile(reg.regular)
 
 		if r.MatchString(path) {
 			path = r.ReplaceAllString(path, reg.to)
@@ -75,5 +85,4 @@ func (this *Server) ReplacePath(path string) string {
 	}
 
 	return path
-
 }

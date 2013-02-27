@@ -3,44 +3,43 @@ package main
 import (
 	"fmt"
 	"jrgo"
-	"reflect"
+	//gii "jrgo/gii"
+	//"reflect"
 )
 
 type MainController struct {
 	jrgo.Controller
-	Action string
+	Name string
 	//params map[string]string
 
 	//jrgo.Controller
-	controllerType reflect.Type
+	//controllerType reflect.Type
 }
 
 type SiteController struct {
 	jrgo.Controller
-	Action string
-
-	controllerType reflect.Type
+	Name string
 }
 
 func (this *MainController) ActionIndex() {
 
-	fmt.Println("action: ", this.Action)
+	form := this.Ctx.Request.Form
+	for k, v := range form {
+		this.Data[k] = v
+	}
+
+	fmt.Println("->controllerName: ", this.Name)
 }
 
 func (this *SiteController) ActionIndex() {
-
-	fmt.Println("site controller -> action index: ", this.Name)
+	this.Data = this.Form
+	fmt.Println("->controllerName: ", this.Data)
 }
 
 func main() {
-	m := MainController{Action: "main"}
-	s := SiteController{Action: "site"}
 
-	m.ActionIndex()
-	s.ActionIndex()
-
-	jrgo.JrRouting.Register("main", &m)
-	jrgo.JrRouting.Register("site", &s)
+	jrgo.JrRouting.Register(&MainController{Name: "main"})
+	jrgo.JrRouting.Register(&SiteController{Name: "site"})
 
 	jrgo.JrServer.StartServer()
 	//jrgo.Add("site", &SiteController{})

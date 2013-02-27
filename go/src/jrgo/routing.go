@@ -26,19 +26,26 @@ func init() {
 	//JrRouting.Register("gii.default", c)
 }
 
-func (this *Routing) Register(name string, c ControllerInterface) {
-	t := reflect.Indirect(reflect.ValueOf(c)).Type()
-	m := &controllerMap{strings.ToLower(name), t}
+/**
+ * 路由注册，根据ControllerName定位具体的Controller
+ */
+func (this *Routing) Register(c ControllerInterface) {
+	rt := reflect.Indirect(reflect.ValueOf(c))
+	t := rt.Type()
 
+	name := rt.FieldByName("Name").String()
 	fmt.Println("->add action:", name)
-	this.userMaps = append(this.userMaps, m)
+
+	if name != "" {
+		m := &controllerMap{strings.ToLower(name), t}
+		this.maps = append(this.maps, m)
+	}
 }
 
 /** 
  * 根据请求URL的路径，调用相应方法
  */
-func (this *Routing) Call(path string) {
-
+func (this *Routing) Call(path string, ctx *Request) bool {
 	var (
 		moduleMatch string
 		moduleType  reflect.Type
@@ -49,24 +56,24 @@ func (this *Routing) Call(path string) {
 
 	if length < 2 {
 		moduleMatch = params[0] + ".default"
-		params[1], params[2] = "index", "index"
+		params = append(params, "index", "index")
 	} else {
 		moduleMatch = params[0] + "." + strings.ToLower(params[1])
 		if length < 3 {
-			params[2] = "index"
+			params = append(params, "index")
 		}
 	}
-	fmt.Println("m.action:", params, length)
+	fmt.Println("path:", params, length)
 
-	for _, m := range this.userMaps {
+	for _, m := range this.maps {
 		if m.controllerName == params[0] {
 			moduleType = m.controllerType
 			action = params[1]
 			find = true
 			break
-		} else if m.controllerName == moduleMath {
+		} else if m.controllerName == moduleMatch {
 			moduleType = m.controllerType
-			action = params[2])
+			action = params[2]
 			find = true
 			break
 		}
@@ -74,16 +81,28 @@ func (this *Routing) Call(path string) {
 
 	if find == true {
 		vc := reflect.New(moduleType)
-		method := vc.MethodByName(strings.Title(action))
+		method := vc.MethodByName("Action" + strings.Title(action))
+
 		if method.IsValid() == true {
-			in := make([]reflect.Value, 0)
+			init := vc.MethodByName("Init")
+			in := make([]reflect.Value, 1)
+			in[0] = reflect.ValueOf(ctx)
+			init.Call(in)
+
+			in = make([]reflect.Value, 0)
+
+			vc.MethodByName("BeforeAction").Call(in)
 			method.Call(in)
+			vc.MethodByName("AfterAction").Call(in)
+			return true
 		} else {
-			log.Fatal("Call to undefined action: ", action)
+			log.Println("Call to undefined action: ", action)
 		}
 	} else {
-		log.Fatal("Call to undefined controller or module: ", params[0])
+		log.Println("Call to undefined controller or module: ", params[0])
 	}
+
+	return false
 }
 
 /**
@@ -102,7 +121,8 @@ func (this *Routing) ParsePath(path string) ([]string, int) {
 	length := len(params)
 
 	if length == 0 {
-		params[0], length = "site", 1
+		params = append(params, "site")
+		length = 1
 	}
 	params[0] = strings.ToLower(params[0])
 

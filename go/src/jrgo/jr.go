@@ -16,16 +16,12 @@ type JrBase struct {
 }
 
 var (
-	JrApp        = JrBase{Name: "JR", Version: "1.0.0"}
-	JrServer     = Server{}
-	JrController = Controller{}
-	JrRouting    = Routing{}
+	JrApp    = JrBase{Name: "JR", Version: "1.0.0"}
+	JrServer = Server{}
+	//JrController = Controller{}
+	JrRouting = Routing{}
 )
 
 func init() {
 
-}
-
-func (this *JrBase) StartServer() {
-	JrServer.StartServer()
 }
