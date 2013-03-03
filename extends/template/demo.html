@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="./t.js"></script>
+		
+		
+	</head>
+	<body>
+		
+		<div>
+			Name: <t>name</t>
+		</div>
+		
+		<div>
+			Password: <t name="password"></t>
+		</div>
+		
+		<div>
+			tel: <t name="tel"></t>
+		</div>
+		
+		<div>
+			tel: <span name="tel"></span>
+		</div>
+		
+		<div>
+			<ul class="">
+				<for name="list">
+					<li index="{$i}" length="{$length}"><a href="{$url}">{$name}</a></li>
+				</for>
+			</ul>
+		</div>
+		
+		<div>
+			<if name="test"></if>
+		</div>
+		
+		<script type="text/javascript">
+			var list = {
+				name: "fanx",
+				password: "byfx1989A",
+				tel: "15901210000",
+				list: [
+					{name:"baidu", url:"http://www.baidu.com"},
+					{name:"google", url:"http://www.google.com"}
+				]
+			}
+			
+			window.onload = function() {
+				new t(list, {tag:"t"});
+			}
+			
+		</script>
+	</body>
+</html>
