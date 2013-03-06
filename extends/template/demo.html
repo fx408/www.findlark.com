@@ -26,10 +26,14 @@
 		<div>
 			<ul class="">
 				<for name="list">
-					<li index="{$i}" length="{$length}"><a href="{$url}">{$name}</a></li>
-					<for name="list">
-						{?$isOpen}The file {@$file} is open!{:}The file {@$file} is close!{/}
-					</for>
+					<li index="{$i}" length="{$length}">
+						<a href="{$url}">{$name}</a>
+						<ul>
+						<for name="users">
+							<li index="{$i}" length="{$length}">{$a}-{$b}</li>
+						</for>
+						</ul>
+					</li>
 				</for>
 			</ul>
 		</div>
@@ -63,8 +67,19 @@
 				tel: "15901210000",
 				users: {a:"name_A", b:"name_B"},
 				list: [
-					{name:"baidu", url:"http://www.baidu.com", isOpen: true},
-					{name:"google", url:"http://www.google.com", isOpen: false}
+					{
+						name:"baidu",
+						url:"http://www.baidu.com",
+						isOpen: true,
+						users:[{u:"baidu_u_a", p:"baidu_p_a"}, {u:"baidu_u_b", p:"baidu_p_b"}, {u:"bing_u_b", p:"bing_p_b"}]
+					},
+					{
+						name:"google",
+						url:"http://www.google.com",
+						isOpen: false,
+						users:[
+						{u:"google_u_a", p:"google_p_a"}, {u:"google_u_b", p:"google_p_b"}]
+					}
 				],
 				isOpen: true,
 				isClose: false,
@@ -72,15 +87,9 @@
 			}
 			
 			window.onload = function() {
-				//new newTemplate(list, {tag:"t"});
+				new newTemplate(list, {tag:"t"});
 			}
 	
-			str = "<% var a = '// 1212'; // zhu she //11 \n %>"
-				+ "1122";
-			
-			
-			str = str.replace(new RegExp("(\<\%[^\%\>]*)//.*","g"), "$1");
-			console.log(str);
 		</script>
 	</body>
 </html>
