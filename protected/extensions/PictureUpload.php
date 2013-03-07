@@ -1,10 +1,9 @@
 <?php
 
 class ImageUpload extends Image{
-	public $allowPicType = array('image/jpg', 'image/pjpeg', 'image/jpeg', 'image/gif');
-	private $maxWidth = 1024;
-	private $maxHeight = 768;
-	private $thumbDirName = 'thumb';
+	protected $maxWidth = 1024;
+	protected $maxHeight = 768;
+	protected $thumbDirName = 'thumb';
 	
 	public static function model($className = __CLASS__) {
 		return parent::model($className);
@@ -25,7 +24,7 @@ class ImageUpload extends Image{
 		$fileName = $this->makeFileName();
 		$filePath = $uploadDir.$fileName.'.'.$fileExt;
 		
-		# 创建文件
+		// 创建文件
 		if(!@ move_uploaded_file($file['tmp_name'], $filePath)) {
 			throw new Exception('文件上传失败!');
 		}
