@@ -1,6 +1,8 @@
 <?php
 
 class ImageUpload extends Image{
+	public $allowPicType = array('image/jpg', 'image/pjpeg', 'image/jpeg');
+	
 	public static function model($className = __CLASS__) {
 		return parent::model($className);
 	}
@@ -10,12 +12,12 @@ class ImageUpload extends Image{
 	 * @param $file 客户端提交的文件信息，格式等同于$_FILE['file']
 	 * return array*(), 文件完整路径,目录,文件名(不含扩展名),扩展名
 	 */
-	public function uploadFile($file) {
-		if(!isset($this->allowPicType[$file['type']])) {
+	public function uploadImage($file) {
+		if(!in_array($file['type'], $this->allowPicType)) {
 			throw new Exception('File type not allowed!');
 		}
 		
-		$fileExt = $this->allowPicType[$file['type']];
+		$fileExt = 'jpg';
 		$uploadDir = $this->makeDir();
 		$fileName = $this->makeFileName();
 		$filePath = $uploadDir.$fileName.'.'.$fileExt;
