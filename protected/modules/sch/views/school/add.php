@@ -1,5 +1,5 @@
 <div>
-	<?php $this->renderPartial('add_step');?>
+	<?php $this->renderPartial('add_step', array('now'=>0));?>
 	
 	<form action="/sch/school/add" method="post" id="postForm">
 		<div><h3>学校信息</h3></div>

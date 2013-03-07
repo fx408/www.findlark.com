@@ -1,9 +1,7 @@
 <div>
-	<?php $this->renderPartial('add_step');?>
+	<?php $this->renderPartial('add_step', array('now'=>1));?>
 	
 	<form action="/sch/school/addZone" method="post" id="postForm">
-		<input type="hidden" name="Form[school_id]" value="0">
-		
 		<div><h3>校区信息</h3></div>
 		<div class="clone_div">
 			<table>
@@ -31,7 +29,7 @@
 				
 				<tr>
 					<td>所在地区：</td>
-					<td></td>
+					<td id="city"></td>
 					<td></td>
 				</tr>
 				
@@ -43,7 +41,11 @@
 				
 				<tr>
 					<td>地图定位：</td>
-					<td></td>
+					<td>
+						<input type="hidden" name="Form[latitude]" value="0" id="form_latitude">
+						<input type="hidden" name="Form[longitude]" value="0" id="form_longitude">
+						<a href="javascript:;" id="position">定位</a>
+					</td>
 					<td></td>
 				</tr>
 				
@@ -63,7 +65,30 @@
 </div>
 
 <script type="text/javascript">
-	
+function createCitysSelectList(parent_id, selectName) {
+	$.get("/sch/default/citys", {parent_id:parent_id}, function(data) {
+		if(!data) return;
+		html = '';
+		
+		if(parent_id == 0) html = '<option value="-1">请选择</option>';
+		
+		for(var k in data) {
+			html += '<option value="'+k+'">'+data[k]+'</option>';
+		}
+		
+		if(html == '') return;
+
+		if( $("#form_"+selectName).length == 0) {
+			html = '<select name="From['+selectName+']" id="form_'+selectName+'">'+html+'</select>';
+			$("#city").append(html);
+		} else {
+			$("#form_"+selectName).html(html);
+		}
+		
+		if(parent_id != 0) $("#form_"+selectName).trigger("change");
+	}, "json");
+}
+
 $(function() {
 	$("#postForm input[name=submit]").click(function() {
 		submitForm();
@@ -75,6 +100,31 @@ $(function() {
 		submitForm();
 		return false;
 	});
+	
+	
+	$("#city").on("change", "#form_provinces, #form_city", function() {
+		var val = $(this).val(), 
+			_id = $(this).attr("id"), 
+			selectName = "";
+		
+		if(val == -1) {
+			$("#form_city, #form_county").remove();
+			return;
+		}
+		
+		if(_id == "form_provinces") {
+			selectName = "city";
+			$("#form_city, #form_county").remove();
+		} else {
+			$("#form_county").remove();
+			selectName =  "county";
+		}
+		
+		createCitysSelectList(val, selectName);
+	});
+	
+	
+	createCitysSelectList(0, 'provinces');
 });
 	
 </script>

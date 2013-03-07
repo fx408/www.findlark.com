@@ -89,7 +89,7 @@ class SchoolType extends CActiveRecord
 	
 	public function getAList() {
 		$data = $this->findAll('parent_id=0');
-		$list = array('-1'=>'请选择学校类型');
+		$list = array('-1'=>'请选择');
 		foreach($data as $item) {
 			$list[$item->id] = $item->name;
 		}
@@ -98,8 +98,8 @@ class SchoolType extends CActiveRecord
 	}
 	
 	public function getBList() {
-		$data = $this->findAll('parent_id!=0');
-		$list = array('-1'=>'请选择校区类型');
+		$data = $this->findAll();
+		$list = array('-1'=>'请选择');
 		foreach($data as $item) {
 			$list[$item->id] = $item->name;
 		}

@@ -39,10 +39,10 @@ class School extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, type, create_time', 'required'),
+			array('name, type, create_time', 'required', 'message'=>'{attribute}'),
 			array('type, status, create_user, create_time', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>30),
-			array('desc', 'length', 'max'=>500),
+			array('name', 'length', 'max'=>30, 'tooLong'=>'学校名称不超过30个字符!'),
+			array('desc', 'length', 'max'=>500, 'tooLong'=>'学校描述不超过500个字符!'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, desc, type, status, create_user, create_time', 'safe', 'on'=>'search'),
@@ -67,9 +67,9 @@ class School extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'name' => '请填写学校名称!',
 			'desc' => 'Desc',
-			'type' => 'Type',
+			'type' => '请选择学校类型!',
 			'status' => 'Status',
 			'create_user' => 'Create User',
 			'create_time' => 'Create Time',

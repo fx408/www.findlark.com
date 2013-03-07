@@ -46,11 +46,12 @@ class SchoolZone extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('school_id, name, type, address, status, create_time', 'required'),
-			array('school_id, name, type, provinces, city, county, status, create_user, create_time', 'numerical', 'integerOnly'=>true),
+			array('school_id, name, type, address, create_time', 'required'),
+			array('school_id, type, provinces, city, county, status, create_user, create_time', 'numerical', 'integerOnly'=>true),
 			array('latitude, longitude', 'numerical'),
 			array('desc', 'length', 'max'=>500),
 			array('address', 'length', 'max'=>200),
+			array('name', 'length', 'max'=>30),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, school_id, name, desc, type, address, latitude, longitude, provinces, city, county, status, create_user, create_time', 'safe', 'on'=>'search'),
@@ -120,5 +121,21 @@ class SchoolZone extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	//
+	public function getZoneList($school_id = 0) {
+		if(!$school_id) $school_id = Yii::app()->session->get('school_id');
+		
+		$criteria=new CDbCriteria;
+		$criteria->compare('school_id',$this->school_id);
+		
+		$list = array();
+		$data = $this->findAll($criteria);
+		foreach($data as $item) {
+			$list[$item->id] = $item->name;
+		}
+		
+		return $list;
 	}
 }

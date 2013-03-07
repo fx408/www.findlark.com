@@ -30,7 +30,7 @@ class Image extends ExtensionsBase{
 	 * return 8个大写因为字符
 	 */
 	public function makeFileName($ext = '') {
-		$n = microtime(true) * 100;
+		$n = microtime(true) * 100000;
 		$str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$fileName = '';
 		
@@ -46,7 +46,7 @@ class Image extends ExtensionsBase{
 	// 创建目录
 	public function makeDir($root = 'upload') {
 		$basePath = realpath(Yii::app()->basePath.'/../').'/'.$root;
-		$dir = $basePath.'/'.date('Y').'/'.date('m').'/'.date('d').'/'.floor(time()/3600).'/thumb';
+		$dir = $basePath.'/'.date('Y').'/'.date('md').'/'.floor(time()/3600).'/thumb';
 		if(!file_exists($dir)) mkdir($dir, 0700, 1);
 		return substr($dir, 0, -5);
 	}
@@ -73,7 +73,7 @@ class Image extends ExtensionsBase{
 	}
 	
 	public function deleteImage($dir, $name) {
-		for($i = 0; $i < 4;$i++) {
+		for($i = 0; $i < 4; $i++) {
 			$thumb = $dir.'/thumb/thumb_'.($i*100 + 100).'_0_'.$name;
 			if(file_exists($thumb)) unlink($thumb);
 		}

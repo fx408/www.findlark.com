@@ -2,20 +2,23 @@
 class TestCommand extends CConsoleCommand {
 	
 	public function actionIndex() {
+		Yii::import('sch.models.*');
 		$file = dirname(__FILE__).'/data/city2.txt';
 		
 		$fp = fopen($file, 'r');
-		$model = cityList::model();
+		$model = Citys::model();
 		
-		$parent_id = 0;
+		$parent_0 = 0; $parent_1 = 0;
 		while(!feof($fp)) {
 			$line = fgets($fp);
 			$first = substr($line, 0, 1);
 			if($first == 'a') {
 				$type = 0;
-				$parent_id = 0;
+				$parent_0 = 0;
+			} else if($first == '1') {
+				$type = 1;
+				$parent_1 = 0;
 			}
-			else if($first == '1') $type = 1;
 			else $type = 2;
 			
 			$line = preg_replace("/[\s\r\n\ta1]+/", "", trim($line));
@@ -26,7 +29,7 @@ class TestCommand extends CConsoleCommand {
 			
 			$model->id = null;
 			$model->name = $line;
-			$model->parent_id = $parent_id;
+			$model->parent_id = ($type == 2 ? $parent_1 : $parent_0);
 			$model->type = $type;
 			$model->isNewRecord = true;
 			if(!$model->save()) {
@@ -35,7 +38,9 @@ class TestCommand extends CConsoleCommand {
 			}
 			
 			if($type == 0) {
-				$parent_id = $model->id;
+				$parent_0 = $model->id;
+			} else if($type == 1) {
+				$parent_1 = $model->id;
 			}
 		}
 	}

@@ -1,0 +1,11 @@
+body{margin:10px;}
+
+table th{background-color:#AFDAF1; line-height:20px; padding:0 5px;}
+
+input[type="text"], textarea{border:1px solid #ccc; border-color:#a0a0a0 #ddd #f0f0f0 #a0a0a0; padding:0 2px;}
+
+input[type="text"]:focus{background-color:#FFF8DF}
+
+.step_list ul li{float:left; padding-right:3px; color:#999}
+.step_list ul li.current{color:red}
+.step_list ul li.yes{color:green}
