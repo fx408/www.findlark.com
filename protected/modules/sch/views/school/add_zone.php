@@ -42,8 +42,9 @@
 				<tr>
 					<td>地图定位：</td>
 					<td>
-						<input type="hidden" name="Form[latitude]" value="0" id="form_latitude">
-						<input type="hidden" name="Form[longitude]" value="0" id="form_longitude">
+						纬度：<input type="text" name="Form[latitude]" value="" id="form_latitude">
+						经度：<input type="text" name="Form[longitude]" value="" id="form_longitude">
+						<br>
 						<a href="/sch/school/picker" id="position">定位</a>
 					</td>
 					<td></td>
@@ -94,9 +95,15 @@ function createCitysSelectList(parent_id, selectName) {
 
 var position = {};
 function positionCallback(p) {
+	$("#form_latitude").val(p.ib.toFixed(4));
+	$("#form_longitude").val(p.jb.toFixed(4));
 	
-	console.log(p);
-	position = p;
+	
+}
+
+function praseAddress(address) {
+	
+	console.log(address);
 }
 
 $(function() {
