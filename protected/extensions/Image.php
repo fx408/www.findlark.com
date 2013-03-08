@@ -30,7 +30,10 @@ class Image extends ExtensionsBase{
 	 * return 8个大写因为字符
 	 */
 	public function makeFileName($ext = '') {
-		$n = microtime(true) * 100000;
+		$n = microtime();
+		$n = explode(' ', $n);
+		$n = ($n[1]%86400 + $n[0]) * 100000;
+
 		$str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$fileName = '';
 		

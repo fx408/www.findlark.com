@@ -15,21 +15,27 @@
 <div class="clear"></div>
 
 <script type="text/javascript">
-	function postMsg(error, msg, callback) {
+	function postMsg(error, msg, callback, data) {
 		var color = error == 0 ? "green" : "red";
 		
 		$("#postInfo").css({color:color}).html(msg);
 		
 		if(error == 0 && callback) {
-			callback();
+			callback(data);
 		}
 	}
 	
-	function submitForm(formId) {
+	function submitForm(formId, callback) {
 		var $form = formId ? $("#"+formId) : $("#postForm");
 		
 		$form.find("input[type=button]").attr("disabled", "disabled");
 		postMsg(0, "正则提交...");
+		
+		if(!callback) {
+			callback = function(data) {
+				document.location.href = data.params.url;
+			}
+		}
 		
 		$.ajax({
 			url: $form.attr("action"),
@@ -38,9 +44,7 @@
 			dataType: "json",
 			success: function(data) {
 				if(data.error == 0) {
-					postMsg(0, "添加成功!", function() {
-						document.location.href = data.params.url;
-					});
+					postMsg(0, "添加成功!", callback, data);
 				} else {
 					postMsg(1, data.msg);
 				}
@@ -48,7 +52,7 @@
 				$form.find("input[type=button]").removeAttr("disabled");
 			},
 			error: function() {
-				$(this).find("input[type=button]").removeAttr("disabled");
+				$form.find("input[type=button]").removeAttr("disabled");
 				postMsg(1, "提交失败!");
 			}
 		});

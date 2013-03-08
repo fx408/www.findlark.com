@@ -3,12 +3,14 @@ class SchoolController extends SController {
 	public function actionIndex() {
 		
 		
+		$picList = SchoolPic::model()->picList;
+		
+		$this->render('index', array('picList'=>$picList));
 	}
 	
-	public function beforeAction($action) {
-		Yii::app()->session->open();
+	public function actionPicker() {
 		
-		return parent::beforeAction($action);
+		$this->render('picker');
 	}
 	
 	// 添加学校
@@ -60,6 +62,7 @@ class SchoolController extends SController {
 			$model->id = null;
 			$model->create_time = time();
 			$model->create_user = 0;
+			$model->status = 0;
 			if($model->type < 1) $model->type = null;
 			$model->isNewRecord = true;
 			
@@ -81,9 +84,28 @@ class SchoolController extends SController {
 		
 		$request = Yii::app()->request;
 		if($request->isPostRequest) {
-			
-			
-			sleep(2);
+			$model = SchoolPic::model();
+			$form = $request->getParam('Form');
+			try{
+				$upload = PictureUpload::model()->uploadImage($_FILES['file']);
+				$thumb = PictureUpload::model()->mkImageThumb($upload['dir'], $upload['name'], 400, 300);
+				PictureUpload::model()->mkImageThumb($upload['dir'], $upload['name'], 45, 45, false, true);
+				
+				$model->id = null;
+				$model->zone_id = empty($form['zone_id']) ? null : $form['zone_id'];
+				$model->title = $form['title'];
+				$model->school_id = $school_id;
+				$model->thumb = $thumb;
+				$model->name = $upload['name'];
+				$model->path = str_replace(realpath(Yii::app()->basePath.'/../'), '', $upload['dir']);
+				$model->isNewRecord = true;
+				if(!$model->save()) {
+					throw new Exception($this->getModelFirstError($model));
+				}
+				
+			} catch(Exception $e) {
+				$this->_end(1, $e->getMessage());
+			}
 			
 			$this->_end(0, '成功!', array('url'=>'/upload/abc.jpg'));
 		}
@@ -100,7 +122,18 @@ class SchoolController extends SController {
 		if($request->isPostRequest) {
 			$form = $request->getParam('Form');
 			
+			$model = SchoolNote::model();
+			$model->attributes = $form;
+			$model->id= null;
+			$model->school_id = $school_id;
+			$model->create_time = time();
+			$model->create_user = 0;
+			$model->status = 0;
+			$model->isNewRecord = true;
 			
+			if(!$model->save()) {
+				$this->_end(1, $this->getModelFirstError($model));
+			}
 			
 			$action = $form['continue'] ? 'addNote' : 'success';
 			$this->_end(0, "信息为空！", array('url'=>'/sch/school/'.$action));

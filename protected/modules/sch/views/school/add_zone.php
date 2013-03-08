@@ -44,7 +44,7 @@
 					<td>
 						<input type="hidden" name="Form[latitude]" value="0" id="form_latitude">
 						<input type="hidden" name="Form[longitude]" value="0" id="form_longitude">
-						<a href="javascript:;" id="position">定位</a>
+						<a href="/sch/school/picker" id="position">定位</a>
 					</td>
 					<td></td>
 				</tr>
@@ -63,6 +63,9 @@
 		</div>
 	</form>
 </div>
+
+<link rel="stylesheet" type="text/css" href="/static/js/colorbox/colorbox.css">
+<script type="text/javascript" src="/static/js/colorbox/jquery.colorbox.js"></script>
 
 <script type="text/javascript">
 function createCitysSelectList(parent_id, selectName) {
@@ -89,6 +92,13 @@ function createCitysSelectList(parent_id, selectName) {
 	}, "json");
 }
 
+var position = {};
+function positionCallback(p) {
+	
+	console.log(p);
+	position = p;
+}
+
 $(function() {
 	$("#postForm input[name=submit]").click(function() {
 		submitForm();
@@ -100,7 +110,6 @@ $(function() {
 		submitForm();
 		return false;
 	});
-	
 	
 	$("#city").on("change", "#form_provinces, #form_city", function() {
 		var val = $(this).val(), 
@@ -123,6 +132,13 @@ $(function() {
 		createCitysSelectList(val, selectName);
 	});
 	
+	$("#position").colorbox({
+		iframe:true,
+		width:"80%",
+		height:"80%",
+		opacity: 0.5,
+		close: '<button>确认选择</button>'
+	});
 	
 	createCitysSelectList(0, 'provinces');
 });

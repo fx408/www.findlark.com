@@ -6,8 +6,10 @@
  * The followings are the available columns in table 'school.school_pic':
  * @property integer $id
  * @property integer $school_id
- * @property integer $title
+ * @property integer $zone_id
+ * @property string $title
  * @property string $name
+ * @property string $thumb
  * @property string $path
  */
 class SchoolPic extends CActiveRecord
@@ -37,13 +39,14 @@ class SchoolPic extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, school_id, name, path', 'required'),
-			array('id, school_id, title', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>20),
+			array('school_id, zone_id, name, path', 'required', 'message'=>'{attribute}'),
+			array('school_id, zone_id', 'numerical', 'integerOnly'=>true),
+			array('title, name', 'length', 'max'=>20, 'tooLong'=>'图片标题不能超过20个字符!'),
+			array('thumb', 'length', 'max'=>30),
 			array('path', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, school_id, title, name, path', 'safe', 'on'=>'search'),
+			array('id, school_id, zone_id, title, name, thumb, path', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,8 +69,10 @@ class SchoolPic extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'school_id' => 'School',
+			'zone_id' => '请填选择校区!',
 			'title' => 'Title',
 			'name' => 'Name',
+			'thumb' => 'Thumb',
 			'path' => 'Path',
 		);
 	}
@@ -85,12 +90,30 @@ class SchoolPic extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('school_id',$this->school_id);
-		$criteria->compare('title',$this->title);
+		$criteria->compare('zone_id',$this->zone_id);
+		$criteria->compare('title',$this->title,true);
 		$criteria->compare('name',$this->name,true);
+		$criteria->compare('thumb',$this->thumb,true);
 		$criteria->compare('path',$this->path,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function getPicList() {
+		$criteria=new CDbCriteria;
+		
+		$criteria->limit = 100;
+		$criteria->order = '`id` ASC';
+		
+		$data = $this->findAll($criteria);
+		$list = array();
+		
+		foreach($data as $item) {
+			$list[$item->id] = $item->attributes;
+		}
+		
+		return $list;
 	}
 }
