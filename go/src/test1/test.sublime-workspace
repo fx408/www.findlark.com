@@ -1,0 +1,595 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"for",
+				"form	url.Values ν"
+			],
+			[
+				"re",
+				"Request	struct ʈ"
+			],
+			[
+				"p",
+				"ParseForm	err error ƒ"
+			],
+			[
+				"c",
+				"Ctx	*jrgo.Request ν"
+			],
+			[
+				"f",
+				"Form	url.Values ν"
+			],
+			[
+				"r",
+				"ResponseWriter	http.ResponseWriter ν"
+			],
+			[
+				"a",
+				"after	reflect.Value ν"
+			],
+			[
+				"m",
+				"MethodByName	reflect.Value ƒ"
+			],
+			[
+				"func",
+				"func (*Controller)	func (...) {...} ʂ"
+			],
+			[
+				"s",
+				"StructField	struct ʈ"
+			],
+			[
+				"fi",
+				"FieldByName	reflect.Value ƒ"
+			],
+			[
+				"fun",
+				"func (*SiteC)	func (...) {...} ʂ"
+			],
+			[
+				"si",
+				"SiteB	struct ʈ"
+			],
+			[
+				"t",
+				"Title	string ƒ"
+			],
+			[
+				"jr",
+				"JrRouting	Routing ν"
+			],
+			[
+				"pr",
+				"Println	n int, err error ƒ"
+			],
+			[
+				"co",
+				"ControllerInterface	interface ¡"
+			],
+			[
+				"reg",
+				"regexp	 package ρ"
+			],
+			[
+				"rep",
+				"ReplaceAllString	string ƒ"
+			],
+			[
+				"im",
+				"import	import (...) ʂ"
+			],
+			[
+				"ma",
+				"maps	[]*controllerMap ν"
+			],
+			[
+				"con",
+				"Controller	struct ʈ"
+			],
+			[
+				"ha",
+				"HandleFunc	 ƒ"
+			],
+			[
+				"fp",
+				"Fprintf	n int, err error ƒ"
+			],
+			[
+				"pa",
+				"Path	string ν"
+			],
+			[
+				"res",
+				"ResponseWriter	interface ¡"
+			],
+			[
+				"ty",
+				"TypeOf	reflect.Type ƒ"
+			],
+			[
+				"va",
+				"ValueOf	reflect.Value ƒ"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/data.go",
+			"settings":
+			{
+				"buffer_size": 13,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/routing.go",
+			"settings":
+			{
+				"buffer_size": 2484,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/server.go",
+			"settings":
+			{
+				"buffer_size": 1635,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/gii/defaultControler.go",
+			"settings":
+			{
+				"buffer_size": 248,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/controller.go",
+			"settings":
+			{
+				"buffer_size": 1002,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/request.go",
+			"settings":
+			{
+				"buffer_size": 1990,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/apache/htdocs/freephoto/beego/utils.go",
+			"settings":
+			{
+				"buffer_size": 211,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/site/site.go",
+			"settings":
+			{
+				"buffer_size": 1162,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/jr.go",
+			"settings":
+			{
+				"buffer_size": 366,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 196.0,
+		"selected_items":
+		[
+			[
+				"pic",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 504.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/F/Users/fanx/Downloads/麻美姐姐教你：手放這裡女人會很想要 (1).mobi",
+		"/D/go/src/atar/main.go",
+		"/F/Users/fanx/AppData/Roaming/Sublime Text 2/Packages/GoSublime/CHANGELOG.md",
+		"/D/go/src/tar/main.go",
+		"/D/go/src/web/main.go",
+		"/D/go/src/jrgo/jr.go",
+		"/D/go/src/jrgo/server.go",
+		"/D/go/src/jrgo/routing.go",
+		"/D/go/src/jrgo/data.go",
+		"/D/go/src/jrgo/controller.go",
+		"/D/go/src/test/main.go",
+		"/D/go/src/site/site.go",
+		"/E/apache/htdocs/freephoto/beego/controller.go",
+		"/E/apache/htdocs/freephoto/beego/beego.go",
+		"/E/apache/htdocs/freephoto/beego/router.go",
+		"/E/apache/htdocs/uuzu/data_center/js/assessment.js",
+		"/D/go/src/web/site.go",
+		"/D/go/src/test/test.sublime-project",
+		"/D/go/src/hello/main.go",
+		"/D/go/src/hello/main.sublime-workspace",
+		"/E/apache/htdocs/freephoto/www.findlark.com/publish.php",
+		"/F/Users/fanx/AppData/Roaming/Sublime Text 2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"	\n",
+			"ctx",
+			"Context",
+			"ControllerName",
+			"			\n",
+			"	\n",
+			"sayHello",
+			"x"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			" \n",
+			"		\n"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/data.go",
+					"settings":
+					{
+						"buffer_size": 13,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13,
+								13
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/routing.go",
+					"settings":
+					{
+						"buffer_size": 2484,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2171,
+								2171
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 656.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/server.go",
+					"settings":
+					{
+						"buffer_size": 1635,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1183,
+								1183
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 495.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/gii/defaultControler.go",
+					"settings":
+					{
+						"buffer_size": 248,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								181,
+								181
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/controller.go",
+					"settings":
+					{
+						"buffer_size": 1002,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1002,
+								1002
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 687.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/request.go",
+					"settings":
+					{
+						"buffer_size": 1990,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								797,
+								797
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 180.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/E/apache/htdocs/freephoto/beego/utils.go",
+					"settings":
+					{
+						"buffer_size": 211,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								46,
+								210
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/site/site.go",
+					"settings":
+					{
+						"buffer_size": 1162,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								70,
+								70
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 135.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/E/apache/htdocs/freephoto/www.findlark.com/go/src/jrgo/jr.go",
+					"settings":
+					{
+						"buffer_size": 366,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								295,
+								295
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/GoSublime/GoSublime.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 32.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}
