@@ -1,8 +1,6 @@
 <?php
 class SchoolController extends SController {
 	public function actionIndex() {
-		
-		
 		$picList = SchoolPic::model()->picList;
 		
 		$this->render('index', array('picList'=>$picList));
@@ -23,6 +21,7 @@ class SchoolController extends SController {
 			$model->id = null;
 			if($model->type < 1) $model->type = null;
 			$model->create_time = time();
+			$model->create_user = Yii::app()->user->id;
 			$model->isNewRecord = true;
 			if(!$model->save()) {
 				$this->_end(1, $this->getModelFirstError($model));
@@ -37,6 +36,8 @@ class SchoolController extends SController {
 				$linkModel->title = $title;
 				$linkModel->url = 'http://'.$link['url'][$k];
 				$linkModel->isNewRecord = true;
+				$linkModel->create_time = $model->create_time;
+				$linkModel->create_user = Yii::app()->user->id;
 				$linkModel->save();
 			}
 			
@@ -61,7 +62,7 @@ class SchoolController extends SController {
 			$model->school_id = $school_id;
 			$model->id = null;
 			$model->create_time = time();
-			$model->create_user = 0;
+			$model->create_user = Yii::app()->user->id;
 			$model->status = 0;
 			if($model->type < 1) $model->type = null;
 			$model->isNewRecord = true;
@@ -98,6 +99,8 @@ class SchoolController extends SController {
 				$model->thumb = $thumb;
 				$model->name = $upload['name'];
 				$model->path = str_replace(realpath(Yii::app()->basePath.'/../'), '', $upload['dir']);
+				$model->create_time = time();
+				$model->create_user = Yii::app()->user->id;
 				$model->isNewRecord = true;
 				if(!$model->save()) {
 					throw new Exception($this->getModelFirstError($model));
@@ -127,7 +130,7 @@ class SchoolController extends SController {
 			$model->id= null;
 			$model->school_id = $school_id;
 			$model->create_time = time();
-			$model->create_user = 0;
+			$model->create_user = Yii::app()->user->id;
 			$model->status = 0;
 			$model->isNewRecord = true;
 			
