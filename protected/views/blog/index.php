@@ -14,6 +14,8 @@
 	</div>
 </div>
 <script type="text/javascript" src="<?php echo Yii::app()->params->staticUrl;?>/js/imageLoader.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->params->staticUrl;?>/js/	jquery.masonry.min.js"></script>
+
 <script type="text/javascript">
 
 	$("#blog-list").masonry({

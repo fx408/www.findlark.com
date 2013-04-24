@@ -68,7 +68,7 @@ class ImageCrawl extends Image{
 			if($params['width'] < 100 || $params['height'] < 100) return false;
 			
 			$img->writeImage($fileDir.$fileName.$fileExt);
-			for($i = 0; $i < 4;$i++) {
+			for($i = 0; $i < 4; $i++) {
 				if(($params['width'] - $i*100 - 100) < 0) {
 					break;
 				}

@@ -189,7 +189,7 @@ histogram.prototype.turnExposure = function(n) {
 histogram.prototype.ConvolutionMatrix = function(img, outputCanvasId, matrix, divisor, offset) {
 	// 创建一个输出的 imageData 对象
 	var matrix =[
-	1,0,0,
+	0,0,1,
 	0,0,0,
 	0,0,-1], divisor = 1, offset = 128;
 	

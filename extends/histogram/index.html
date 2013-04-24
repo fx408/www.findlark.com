@@ -133,9 +133,10 @@
 	            step: 1,
 	            slide: function( event, ui ) {
 	                var val = (ui.value-50)/100;
-	                imgM.turnL(img, 'output', val);
+	                //imgM.turnL(img, 'output', val);
 	                //obj.veins(img, 'output', ui.value, 128);
-									$("#veins-value").val(val);
+					$("#veins-value").val(val);
+					obj.ConvolutionMatrix(img, 'output');
 	                //obj.turnExposure(ui.value);
 	            }
 	        });

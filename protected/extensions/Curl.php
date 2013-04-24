@@ -15,6 +15,18 @@ class Curl extends ExtensionsBase{
 		return parent::model($className);
 	}
 	
+	public function setDefault($mix, $value = null) {
+		if(is_array($mix)) {
+			foreach($mix as $key => $val) {
+				if(isset($this->default[$key])) $this->default[$key] = $val;
+			}
+		} else if(is_string($mix)) {
+			if(isset($this->default[$mix])) $this->default[$mix] = $value;
+		}
+		
+		return false;
+	}
+	
 	// 请求
 	public function request($url, $params = array()) {
 		$params = array_merge($this->default, $params);
