@@ -19,3 +19,20 @@
 		<div class="clear"></div>
 	</div>
 </div>
+
+<link rel="stylesheet" href="http://steamdev.com/snippet/css/jquery.snippet.min.css">
+<script src="http://steamdev.com/snippet/js/jquery.snippet.min.js"></script>
+<script type="text/javascript">
+	var list = {'php':1, 'js':1, 'html':1, 'css':1, 'sql':1, 'c':1};
+	
+	$(function() {
+		$("pre.prettyprint").each(function() {
+			var c = $(this).attr("class");
+			c = c.replace(/^.*?\-(\w+)$/, "$1");
+			
+			if(list[c])
+				$(this).snippet(c, {style: 'acid'});
+		});
+	})
+	
+</script>

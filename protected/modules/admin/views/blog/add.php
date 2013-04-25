@@ -23,14 +23,9 @@
 	var editor;
 	KindEditor.ready(function(K) {
 		editor = K.create('#content', {
-			resizeType : 1,
+			allowFileManager : true,
 			height: 400,
-			allowPreviewEmoticons : false,
-			allowImageUpload : false,
-			items : [
-				'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-				'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+			width: 800
 		});
 	});
 	
