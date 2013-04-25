@@ -23,7 +23,7 @@ class ToolController extends AdminController {
 		$this->render('add');
 	}
 	
-	public function acitonDel($id) {
+	public function actionDel($id) {
 		LarkExtends::model()->deleteByPk($id);
 		
 		$this->redirect('/admin/tool/index');

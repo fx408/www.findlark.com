@@ -21,6 +21,9 @@ class Controller extends CController
 	 */
 	public $breadcrumbs=array();
 	
+	public $pageDescription = 'FindLark, 旅行、摄影、编程、魔方、玩乐、分享，如是人生';
+	public $pageKeywords = 'FindLark,BYFX,Lark';
+	
 	public function register() {
 		$cs = Yii::app()->getClientScript();
 		switch($this->id) {
@@ -67,5 +70,11 @@ class Controller extends CController
 	protected function checkAjaxRequest() {
 		if(Yii::app()->request->isAjaxRequest) return true;
 		Yii::app()->end();
+	}
+	
+	public function beforeAction($action) {
+		$this->pageTitle = '';
+		
+		return parent::beforeAction($action);
 	}
 }

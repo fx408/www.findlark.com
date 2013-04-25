@@ -93,4 +93,28 @@ class LarkNovel extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	
+	// ¹ıÂËÆ÷
+	public function getFilter($attributes = null, $isAll = false) {
+		$request = Yii::app()->request;
+		$filter = $this->attributes;
+		foreach($this->attributes as $key => $val) {
+			$filter[$key] = $request->getParam($key, null);
+		}
+		
+		return $filter;
+	}
+	
+	// É¸Ñ¡Æ÷
+	public function getCriteria($filter) {
+		$criteria=new CDbCriteria;
+		
+		foreach($this->attributes as $key => $val) {
+			$fuzzy = in_array($key, array('title', 'summary'));
+			if($filter[$key] !== null) $criteria->compare($key, $filter[$key], $fuzzy);
+		}
+		$criteria->order = "`id` DESC";
+		return $criteria;
+	}
 }

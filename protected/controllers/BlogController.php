@@ -57,6 +57,10 @@ class BlogController extends Controller {
 		$criteria->order = '`id` DESC';
 		$next = LarkNovel::model()->find($criteria);
 		
+		$this->pageTitle = $content->title;
+		$this->pageKeywords = $content->title;
+		$this->pageDescription = $content->summary;
+		
 		$this->render('show', array('content'=>$content, 'prev'=>$prev, 'next'=>$next));
 	}
 	

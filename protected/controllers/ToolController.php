@@ -38,7 +38,6 @@ class ToolController extends Controller {
 		
 		PHPFetion::model()->login(Yii::app()->params->myMobile, Yii::app()->params->myMobilePassword);
 		$statu = PHPFetion::model()->send(Yii::app()->params->myMobile, $message);
-		
 	}
 	
 }

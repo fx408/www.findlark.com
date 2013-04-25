@@ -6,7 +6,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath' => realpath(dirname(__FILE__).'/../'),
-	'name'=>'My Web Application',
+	'name'=>'',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
