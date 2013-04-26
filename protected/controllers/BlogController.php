@@ -40,8 +40,8 @@ class BlogController extends Controller {
 	 */
 	public function actionShow($id) {
 		$id = intval($id);
-		$model = 
-		$content = LarkNovel::model()->findByPk($id);
+		$model = LarkNovel::model();
+		$content = $model->findByPk($id);
 		if(empty($content)) {
 			echo '文章不存在!';
 			Yii::app()->end();
@@ -50,12 +50,12 @@ class BlogController extends Controller {
 		$criteria = new CDbCriteria;
 		$criteria->compare('`id`', '>'.$id);
 		$criteria->order = '`id` ASC';
-		$prev = LarkNovel::model()->find($criteria);
+		$prev = $model->find($criteria);
 		
 		$criteria = new CDbCriteria;
 		$criteria->compare('`id`', '<'.$id);
 		$criteria->order = '`id` DESC';
-		$next = LarkNovel::model()->find($criteria);
+		$next = $model->find($criteria);
 		
 		$this->pageTitle = $content->title;
 		$this->pageKeywords = $content->title;

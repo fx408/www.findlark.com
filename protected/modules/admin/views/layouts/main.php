@@ -14,5 +14,13 @@
 		<div class="bottom">
 			<a href="/admin">首页</a>
 		</div>
+		
+		<script type="text/javascript">
+			$(function() {
+				$("a.del").click(function() {
+					return confirm("确认删除吗?");
+				});
+			});
+		</script>
 	</body>
 </html>

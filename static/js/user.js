@@ -6,7 +6,7 @@ var larkUser = function() {
 		var _this = this;
 		
 		$.get('/site/login', {}, function(data) {
-			//map.init();
+			map.init();
 			nav.init();
 			sns.init();
 			

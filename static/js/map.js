@@ -20,7 +20,7 @@ larkMap.prototype = {
 		var _this = this;
 		var winHeight = $(window).height(), winWidth = $(window).width();
 		$("#google_map").css({"height":winHeight+"px"});
-		
+
 		try{
 			var geolocationError = function(err) { // 定位失败
 				console.log(err);

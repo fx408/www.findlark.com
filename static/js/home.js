@@ -2,10 +2,11 @@ var user, map, sns, nav;
 
 $(function() {
 	map = new larkMap();
-	sns = new larkSns();
-	nav = new larkNav();
-	user = new larkUser();
-	user.init();
+	//sns = new larkSns();
+	//nav = new larkNav();
+	//user = new larkUser();
+	//user.init();
+	map.init();
 	
 	var winWidth=$(window).width();
 	// 显示我要说
