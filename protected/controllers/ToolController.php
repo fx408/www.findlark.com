@@ -28,16 +28,17 @@ class ToolController extends Controller {
 		$this->render('qiyi');
 	}
 	
+	public function actionDos() {
+		if(isset($_GET['s'])) {
+			echo Yii::app()->redis->get('fx_box_count');
+			Yii::app()->end();
+		}
+		
+		Yii::app()->redis->incr('fx_box_count');
+	}
+	
 	public function actionTest() {
-		$data = Curl::model()->request('http://m.weather.com.cn/data/101010100.html', array('header'=>0));
-		$data = CJSON::decode($data);
-		$data = $data['weatherinfo'];
 		
-		$message = sprintf("%s, 今日:%s, %s, %s; 明日:%s, %s, %s", 
-		$data['city'], $data['weather1'], $data['temp1'], $data['wind1'], $data['weather2'], $data['temp2'], $data['wind2']);
-		
-		PHPFetion::model()->login(Yii::app()->params->myMobile, Yii::app()->params->myMobilePassword);
-		$statu = PHPFetion::model()->send(Yii::app()->params->myMobile, $message);
 	}
 	
 }

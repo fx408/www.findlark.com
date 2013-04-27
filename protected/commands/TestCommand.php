@@ -45,4 +45,14 @@ class TestCommand extends CConsoleCommand {
 		}
 	}
 	
+	public function actionOpen100() {
+		$url = 'http://bbs.duowan.com/?fromuid=49937681';
+		
+		for($i = 0; $i < 100; $i++) {
+			Curl::model()->request($url);
+			
+			sleep(1);
+		}
+	}
+	
 }

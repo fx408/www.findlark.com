@@ -1,27 +1,31 @@
 <?php
 class Curl extends ExtensionsBase{
-	private $ip = null;
-	private $userAgent = null;
-	private $default = array(
-		'data'=> null,
+	protected $ip = null;
+	protected $userAgent = null;
+	protected $cookie = null;
+	
+	protected $default = array(
+		'data'=> array(),
 		'type'=> 'get',
 		'useCookie'=> false,
 		'referer'=>'http://www.findlark.com',
-		'header'=> 1,
-		'transfer'=> 1
+		'https' => false,
+		'header'=> false,
+		'transfer'=> false,
+		'timeout'=> 10
 	);
-
+	
 	public static function model($className = __CLASS__) {
 		return parent::model($className);
 	}
 	
-	public function setDefault($mix, $value = null) {
-		if(is_array($mix)) {
-			foreach($mix as $key => $val) {
+	public function setDefault($mixed, $value = null) {
+		if(is_array($mixed)) {
+			foreach($mixed as $key => $val) {
 				if(isset($this->default[$key])) $this->default[$key] = $val;
 			}
-		} else if(is_string($mix)) {
-			if(isset($this->default[$mix])) $this->default[$mix] = $value;
+		} else if(is_string($mixed)) {
+			if(isset($this->default[$mixed])) $this->default[$mixed] = $value;
 		}
 		
 		return false;
@@ -33,20 +37,27 @@ class Curl extends ExtensionsBase{
 		$ip = $this->createIp();
 
 		$ch = curl_init($url);
-
-		curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+		curl_setopt($ch, CURLOPT_TIMEOUT, $params['timeout']);
 		curl_setopt($ch, CURLOPT_REFERER, $params['referer']);
 		curl_setopt($ch, CURLOPT_HEADER, $params['header']);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, $params['transfer']);
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->createAgent());
     curl_setopt($ch, CURLOPT_HTTPHEADER , array('X-FORWARDED-FOR:'.$ip, 'CLIENT-IP:'.$ip));
 
-    if($params['useCookie']) {
+    if(true == $params['useCookie']) {
 			curl_setopt($ch, CURLOPT_COOKIEFILE, $this->createCookie());
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $this->createCookie());
 		}
+		
+		if(true == $params['https']) {
+			//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			//curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+			
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+			curl_setopt($ch, CURLOPT_CAINFO, Yii::app()->basePath.'/../source/cacert.pem');
+		}
 
-		if($params['type'] == 'post') {
+		if('post' == $params['type']) {
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $params['data']);
 		} else {
@@ -61,37 +72,54 @@ class Curl extends ExtensionsBase{
 	
 	// 生成 IP
 	public function createIp($refresh = false) {
-		return rand(10,255).'.'.rand(10,255).'.'.rand(10,255).'.'.rand(10,255);
+		if(empty($this->ip) || $refresh) {
+		 $this->ip = rand(10,255).'.'.rand(10,255).'.'.rand(10,255).'.'.rand(10,255);
+		}
+		
+		return $this->ip;
 	}
 	
 	// 生成 头信息
 	public function createAgent($refresh = false) {
-		switch(rand(0,2)) {
-			case 0: $agent = 'Mozilla/'.rand(4,5).'.0 (compatible; MSIE '.rand(6,10).'.0; Windows NT '.rand(5,6).'.2; .NET CLR 1.1.'.rand(11,55).'22)'; break;
-			case 1: $agent = 'Mozilla/'.rand(4,5).'.0 (Windows NT '.rand(5,6).'.1) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/'.rand(15,21).'.0.912.'.rand(50,66).' Safari/535.7';break;
-			case 2: $agent = 'Mozilla/'.rand(4,5).'.0 (X11; U; Linux i686; en-US; rv:1.'.rand(3,9).'.5) Gecko/'.rand(2004,2012).''.rand(10,12).''.rand(10,28).' Firefox/'.rand(1,7).'.0';break;
+		if(empty($this->agent) || $refresh) {
+			switch(rand(0,2)) {
+				case 0: $agent = 'Mozilla/'.rand(4,5).'.0 (compatible; MSIE '.rand(6,10).'.0; Windows NT '.rand(5,6).'.2; .NET CLR 1.1.'.rand(11,55).'22)'; break;
+				case 1: $agent = 'Mozilla/'.rand(4,5).'.0 (Windows NT '.rand(5,6).'.1) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/'.rand(15,28).'.0.912.'.rand(50,66).' Safari/535.7';break;
+				case 2: $agent = 'Mozilla/'.rand(4,5).'.0 (X11; U; Linux i686; en-US; rv:1.'.rand(3,9).'.5) Gecko/'.rand(2004,2012).''.rand(10,12).''.rand(10,28).' Firefox/'.rand(1,7).'.0';break;
+			}
+			
+			$this->agent = $agent;
 		}
 
-		return $agent;
+		return $this->agent;
 	}
 	
-	//
-	public function createCookie() {
+	// 创建 cookie 临时文件
+	public function createCookie($cookie = null, $refresh = false) {
+		if(empty($this->cookie) || $refresh) {
+			$baseDir = Yii::app()->basePath.'/../tmp_cookie';
+			if(!file_exists($baseDir)) mkdir($baseDir, 755, true);
+			
+			$this->cookie = empty($cookie) ? $baseDir.'/'.$cookie : tempnam($baseDir, 'cookie');
+		}
 		
-		
+		return $this->cookie;
 	}
 	
 	/**
 	 * 按正则匹配页面内容
 	 * @param String $url 页面的URL地址
 	 * @param String $regular 匹配链接的正则
+	 * @param Boolen $repeat 
+	 * @param Array $params 参数
 	 * return Array 正则匹配的结果
 	 */
-	public function matchContent($url, $regular) {
-		if(!Urls::model()->saveUrl($url)) return false;
+	public function matchContent($url, $regular, $repeat = false, $params = array()) {
+		if(false == $repeat && !Urls::model()->saveUrl($url)) return false;
 		
-		$content = Curl::model()->request($url, array('header'=>0));
-		
+		$params['header'] = 0;
+		$content = Curl::model()->request($url, $params);
+
 		$match = preg_match_all($regular, $content, $result);
 		return $match ? $result : false;
 	}

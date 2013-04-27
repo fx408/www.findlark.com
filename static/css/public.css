@@ -36,7 +36,7 @@ a:active{}
 
 
 /* webkit 滚动条样式*/
-::-webkit-scrollbar { width: 10px;}/* Track & scroll thickness */
+::-webkit-scrollbar { width: 10px; height:10px;}/* Track & scroll thickness */
 ::-webkit-scrollbar-track {
 	background-color:#f0f0f0;
 	 border-left:1px solid #d2d2d2;
