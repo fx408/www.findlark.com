@@ -108,7 +108,7 @@ class LarkNovel extends CActiveRecord
 	
 	// É¸Ñ¡Æ÷
 	public function getCriteria($filter) {
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 		
 		foreach($this->attributes as $key => $val) {
 			$fuzzy = in_array($key, array('title', 'summary'));
@@ -116,5 +116,14 @@ class LarkNovel extends CActiveRecord
 		}
 		$criteria->order = "`id` DESC";
 		return $criteria;
+	}
+	
+	public function newArticles() {
+		$criteria = new CDbCriteria;
+		$criteria->select = '`id`, `title`';
+		$criteria->order = "`id` DESC";
+		$criteria->limit = 5;
+		
+		return $this->findAll($criteria);
 	}
 }

@@ -43,8 +43,7 @@ class BlogController extends Controller {
 		$model = LarkNovel::model();
 		$content = $model->findByPk($id);
 		if(empty($content)) {
-			echo '文章不存在!';
-			Yii::app()->end();
+			throw new CHttpException(404, "您访问的页面不存在!");
 		}
 		
 		$criteria = new CDbCriteria;

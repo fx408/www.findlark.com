@@ -26,3 +26,11 @@
 		iObj.init();
 	});
 </script>
+<div style="height:0px; width:0px; overflow:hidden; line-height:0px; padding:0px; margin:0px;">
+	<?php
+	$data = LarkNovel::model()->newArticles();
+	foreach($data as $item) {
+		printf('<a href="%s/blog/%d" title="%s">%s</a>', Yii::app()->params->baseUrl, $item->id, $item->title, $item->title);
+	}
+	?>
+</div>
