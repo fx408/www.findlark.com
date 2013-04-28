@@ -63,9 +63,10 @@ class Curl extends ExtensionsBase{
 		}
 		
 		if(true == $params['https']) {
-			//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-			//curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+			// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 			
+			// 证书地址： http://curl.haxx.se/ca/cacert.pem
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 			curl_setopt($ch, CURLOPT_CAINFO, Yii::app()->basePath.'/../source/cacert.pem');
 		}
