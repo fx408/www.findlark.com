@@ -16,8 +16,8 @@ class DuowanCommand extends CConsoleCommand {
 			'header' => false,
 			'useCookie' => true,
 		);
-		Curl::model()->createCookie('coo1DCF.tmp');
-		Curl::model()->setDefault('referer', 'http://bbs.duowan.com');
+		Curl::model()->cookie = 'coo1DCF.tmp';
+		Curl::model()->referer = 'http://bbs.duowan.com';
 		
 		$result = Curl::model()->request('http://bbs.duowan.com/home.php?mod=spacecp', $params);
 		$isLogin = strpos($result, 'mshing') !== false;

@@ -17,8 +17,11 @@
 	<body>
 		<?php echo $content;?>
 		
-		
 		<div style="display:none">
+			<a href="<?php echo Yii::app()->params->baseUrl;?>" title="FindLark">FindLark</a>
+			<a href="<?php echo Yii::app()->params->baseUrl;?>/blog" title="博客">博客</a>
+			<a href="<?php echo Yii::app()->params->baseUrl;?>/tool" title="tool">tool</a>
+			
 			<script type="text/javascript">
 			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5ba2bf410b154f773b29948e2ddcb0f4' type='text/javascript'%3E%3C/script%3E"));

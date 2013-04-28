@@ -11,7 +11,7 @@ class Curl extends ExtensionsBase{
 		'referer'=>'http://www.findlark.com',
 		'https' => false,
 		'header'=> false,
-		'transfer'=> false,
+		'transfer'=> true,
 		'timeout'=> 10
 	);
 	
@@ -19,6 +19,19 @@ class Curl extends ExtensionsBase{
 		return parent::model($className);
 	}
 	
+	public function __set($name, $value) {
+		if(isset($this->default[$name])) {
+			return $this->default[$name] = $value;
+		}
+		
+		return parent::__set($name, $value);
+	}
+	
+	public function __get($name) {
+		return isset($this->default[$name]) ? $this->default[$name] : parent::__get($name);
+	}
+	
+	// 默认参数设置
 	public function setDefault($mixed, $value = null) {
 		if(is_array($mixed)) {
 			foreach($mixed as $key => $val) {
@@ -53,7 +66,7 @@ class Curl extends ExtensionsBase{
 			//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 			//curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 			
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 			curl_setopt($ch, CURLOPT_CAINFO, Yii::app()->basePath.'/../source/cacert.pem');
 		}
 
@@ -70,7 +83,7 @@ class Curl extends ExtensionsBase{
 		return $contents;
 	}
 	
-	// 生成 IP
+	// 创建 访问IP
 	public function createIp($refresh = false) {
 		if(empty($this->ip) || $refresh) {
 		 $this->ip = rand(10,255).'.'.rand(10,255).'.'.rand(10,255).'.'.rand(10,255);
@@ -79,7 +92,7 @@ class Curl extends ExtensionsBase{
 		return $this->ip;
 	}
 	
-	// 生成 头信息
+	// 创建 浏览器信息
 	public function createAgent($refresh = false) {
 		if(empty($this->agent) || $refresh) {
 			switch(rand(0,2)) {
@@ -95,15 +108,38 @@ class Curl extends ExtensionsBase{
 	}
 	
 	// 创建 cookie 临时文件
-	public function createCookie($cookie = null, $refresh = false) {
+	public function createCookie($refresh = false) {
 		if(empty($this->cookie) || $refresh) {
-			$baseDir = Yii::app()->basePath.'/../tmp_cookie';
-			if(!file_exists($baseDir)) mkdir($baseDir, 755, true);
-			
-			$this->cookie = empty($cookie) ? $baseDir.'/'.$cookie : tempnam($baseDir, 'cookie');
+			$this->cookie = $this->cookieDir.'/'.tempnam($baseDir, 'cookie');
 		}
 		
 		return $this->cookie;
+	}
+	
+	// 设置 访问IP
+	public function _setIp($ip) {
+		return $this->ip = $ip;
+	}
+	
+	// 设置 浏览器信息
+	public function _setAgent($agent) {
+		return $this->agent = $agent;
+	}
+	
+	// 设置 cookie 文件名称
+	public function _setCookie($cookie) {
+		$cookie = $this->cookieDir.'/'.$cookie;
+		if(!file_exists($cookie)) file_put_contents($cookie, '');
+		
+		return $this->cookie = $cookie;
+	}
+	
+	// 获取 Cookie 存放目录
+	public function _getCookieDir() {
+		$dir = Yii::app()->basePath.'/../tmp_cookie';
+		if(!file_exists($dir)) mkdir($dir, 0755, true);
+		
+		return $dir;
 	}
 	
 	/**
@@ -115,7 +151,7 @@ class Curl extends ExtensionsBase{
 	 * return Array 正则匹配的结果
 	 */
 	public function matchContent($url, $regular, $repeat = false, $params = array()) {
-		if(false == $repeat && !Urls::model()->saveUrl($url)) return false;
+		// if(false == $repeat && !Urls::model()->saveUrl($url)) return false;
 		
 		$params['header'] = 0;
 		$content = Curl::model()->request($url, $params);
@@ -149,14 +185,14 @@ class Curl extends ExtensionsBase{
 		}
 
 		$previousActive = -1;
-		$finalresult = array();
+		$finalResult = array();
 		$returnedOrder = array();
 		do{
 			curl_multi_exec($master, $running);
 			if($running !== $previousActive) {
 				$info = curl_multi_info_read($master);
-				if($info['handle']) {
-					$finalresult[] = curl_multi_getcontent($info['handle']);
+				if($info && isset($info['handle'])) {
+					$finalResult[] = curl_multi_getcontent($info['handle']);
 					$returnedOrder[] = array_search($info['handle'], $curl_arr, true);
 					curl_multi_remove_handle($master, $info['handle']);
 					curl_close($curl_arr[end($returnedOrder)]);
@@ -169,7 +205,7 @@ class Curl extends ExtensionsBase{
 		} while($running > 0);
 		curl_multi_close($master);
 		
-		return array_combine($returnedOrder, $finalresult);
+		return array_combine($returnedOrder, $finalResult);
 	}
 }
 ?>

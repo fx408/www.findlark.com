@@ -12,7 +12,7 @@ class ExtensionsBase{
 	
 	public function __get($name) {
 		$getter = '_get'.$name;
-		$dater = '_data'.$name;
+		$dater = strtolower('_data'.$name);
 		
 		if(method_exists($this, $getter)) {
 			return $this->$getter();
@@ -22,8 +22,21 @@ class ExtensionsBase{
 	}
 	
 	public function __set($name, $value) {
+		$setter = '_set'.$name;
+		$dater = strtolower('_data'.$name);
 		
+		if(method_exists($this, $setter)) {
+			return $this->$setter($value);
+		}
 		
+		return $this->_data[$dater] = $value;
+	}
+	
+	public function __isset($name) {
+		
+	}
+	
+	public function __unset($name) {
 		
 	}
 }
