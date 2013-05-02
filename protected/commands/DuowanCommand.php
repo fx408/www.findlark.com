@@ -47,7 +47,8 @@ class DuowanCommand extends CConsoleCommand {
 				echo 'Failed: '.$tid." \r\n";
 			}
 			
-			sleep(60);
+			$sleep = 120 + rand(100, 200);
+			sleep($sleep);
 		}
 		
 		fclose($fp);
@@ -125,7 +126,7 @@ class DuowanCommand extends CConsoleCommand {
 	public function getThreadIds() {
 		$url = 'http://bbs.duowan.com/forum-'.$this->fid.'-1.html';
 		
-		$result = Curl::model()->matchContent($url, "#href\=\"thread\-(\d+)\-1\-1\.html\"#", true);
+		$result = Curl::model()->matchContent($url, "#href\=\"thread\-(\d+)\-1\-1\.html\"#");
 
 		if(!$result || !isset($result[1])) {
 			throw new Exception("Search Thread Failed!");
@@ -143,7 +144,7 @@ class DuowanCommand extends CConsoleCommand {
 			'useCookie'=> true
 		);
 		
-		$result = Curl::model()->matchContent($url, "#name\=\"formhash\"\s+value\=\"(.*?)\"#", true, $params);
+		$result = Curl::model()->matchContent($url, "#name\=\"formhash\"\s+value\=\"(.*?)\"#", $params);
 		if(!$result || !$result[1]) {
 			//throw new Exception("Get FormHash Failed!");
 			return false;
@@ -171,20 +172,23 @@ class DuowanCommand extends CConsoleCommand {
 	// 拼接帖子内容
 	public $face = array('ew50','ew51','ew52','ew53','ew54','ew56','ew57','ew58','ew48','tu','hz19','ew59','ew55','ew35','ew19','ew02');
 	public $text = array(
-		'唉～ 有啥好说的，就那样了。', '呵呵··', '围观围观， 灌水灌水，挣积分。',
-		'吐槽吐槽, 必须吐槽 +10086。', '百度一下，你就知道了。',
+		'！！！！', '····', '。。。。', '？？？？', '****', '%%%%', '####', '@@@@', '￥￥￥￥', '$$$$', '&&&&', '{[]}', ''
 	);
+	
+	public $string = '!@#$%^&*()-_+={}[]|;:.,?`~1234567890qwertyuioplkjhgfdsazxcvbnm';
 	public function getPostsContent() {
-		
 		$rand_key = array_rand($this->face);
 		$face = $this->face[$rand_key];
 		
-		$rand_key = array_rand($this->text);
-		$text = $this->text[$rand_key];
+		//$rand_key = array_rand($this->text);
+		//$text = $this->text[$rand_key];
 		
-		$suffix = rand(100001, 900009);
+		$string = str_shuffle($this->string);
 		
-		return sprintf("%s [%s], %s", $text, $face, $suffix);
+		$r = rand(1001, 9009);
+		$suffix = microtime(true) / 10000 * $r;
+		
+		return sprintf("%s [%s], %s", substr($string, 1, 8), $face, $suffix);
 	}
 	
 }

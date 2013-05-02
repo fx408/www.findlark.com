@@ -71,7 +71,7 @@ class Curl extends ExtensionsBase{
 			curl_setopt($ch, CURLOPT_CAINFO, Yii::app()->basePath.'/../source/cacert.pem');
 		}
 
-		if('post' == $params['type']) {
+		if('post' == strtolower($params['type'])) {
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $params['data']);
 		} else {
@@ -147,11 +147,10 @@ class Curl extends ExtensionsBase{
 	 * 按正则匹配页面内容
 	 * @param String $url 页面的URL地址
 	 * @param String $regular 匹配链接的正则
-	 * @param Boolen $repeat 
 	 * @param Array $params 参数
 	 * return Array 正则匹配的结果
 	 */
-	public function matchContent($url, $regular, $repeat = false, $params = array()) {
+	public function matchContent($url, $regular, $params = array()) {
 		// if(false == $repeat && !Urls::model()->saveUrl($url)) return false;
 		
 		$params['header'] = 0;

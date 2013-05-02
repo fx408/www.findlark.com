@@ -2,7 +2,7 @@
 <script type="text/javascript" src="/static/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 
 
-<form action="/admin/image/add" method="post">
+<form action="/admin/image/add" method="post" style="display:none">
 	标题:<input type="text" name="Form[title]">
 	链接:<input type="text" name="Form[src]">
 	panoramio:<input type="text" name="Form[panoramio_id]">
@@ -22,6 +22,7 @@
 <table>
 	<thead>
 		<tr>
+			<th>ID</th>
 			<th>标题</th>
 			<th>panoramio</th>
 			<th width="60%">链接</th>
@@ -31,12 +32,13 @@
 	<tbody>
 		<?php foreach($data['list'] as $item) { ?>
 		<tr>
+			<td><?php echo $item->id;?></td>
 			<td><?php echo $item->title;?></td>
 			<td><a href="http://www.panoramio.com/photo/<?php echo $item->panoramio_id;?>" target="_blank"><?php echo $item->panoramio_id;?></a></td>
 			<td><a href="<?php echo $item->src;?>" rel="image"><?php echo $item->src;?></a></td>
 			<td>
 				<a href="/admin/image/modify/id/<?php echo $item->id;?>">编辑</a>
-				<a href="/admin/image/del/id/<?php echo $item->id;?>">删除</a>
+				<a href="/admin/image/del/id/<?php echo $item->id;?>" class="del">删除</a>
 			</td>
 		</tr>
 		<?php } ?>
