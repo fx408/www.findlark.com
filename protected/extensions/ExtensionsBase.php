@@ -33,7 +33,6 @@ class ExtensionsBase{
 	}
 	
 	public function __isset($name) {
-		
 	}
 	
 	public function __unset($name) {
