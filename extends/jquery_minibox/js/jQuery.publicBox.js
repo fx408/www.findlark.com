@@ -171,7 +171,7 @@
 		autoCloseTime: 2500, // 延时关闭时间
 		
 		// 用于 publicAjaxPost
-		url: '', //不解释
+		url: '',
 		formId: '', //需要提交的表单ID
 		successCall: function(){}, //请求成功时的回调函数
 		errorCall: function(){}, //请求失败时的回调函数

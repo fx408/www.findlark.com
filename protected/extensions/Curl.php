@@ -151,8 +151,6 @@ class Curl extends ExtensionsBase{
 	 * return Array 正则匹配的结果
 	 */
 	public function matchContent($url, $regular, $params = array()) {
-		// if(false == $repeat && !Urls::model()->saveUrl($url)) return false;
-		
 		$params['header'] = 0;
 		$content = Curl::model()->request($url, $params);
 
