@@ -16,6 +16,10 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'application.extensions.*',
+		'application.extensions.sina.*',
+		'application.extensions.qq.*',
+		'application.extensions.image.*',
+		'application.extensions.algorithm.*',
 	),
 
 	'modules'=>array(

@@ -78,3 +78,4 @@ class Controller extends CController
 		return parent::beforeAction($action);
 	}
 }
+

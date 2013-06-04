@@ -110,7 +110,7 @@ class PHPFetion {
 		} else {
 			$uid = $this->_getUid($toMobile);
 
-			return $uid === '' ? '' : $this->_toUid($uid, $message);
+			return $uid === '' ? false : $this->_toUid($uid, $message);
 		}
 	}
 

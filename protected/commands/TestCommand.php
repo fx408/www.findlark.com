@@ -2,6 +2,28 @@
 class TestCommand extends CConsoleCommand {
 	
 	public function actionIndex() {
+		set_time_limit(0);
+		$start = microtime(true);
+		
+		$img = Yii::app()->basePath.'/../static/test.jpg';
+		$img =Yii::app()->basePath.'/../static/captcha.png';
+		ImageCanny::model()->getEdge($img);
+		//$f1 = ImageHistFeature::model()->getFeature($img);
+		
+		//$img = Yii::app()->basePath.'/../static/QXOOWHQ.jpg';
+		//$img = Yii::app()->basePath.'/../static/Zhuoku085-cut.jpg';
+		//$f2 = ImageHistFeature::model()->getFeature($img);
+		
+		//$sim = Sim::get($f1, $f2);
+		
+		//echo $sim." \n";
+		
+		$gray = ImageTwoValue::model()->getValue($img);
+		
+		printf("Time: %f", microtime(true)-$start);
+	}
+	
+	public function actionIndex2() {
 		Yii::import('sch.models.*');
 		$file = dirname(__FILE__).'/data/city2.txt';
 		

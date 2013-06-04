@@ -4,6 +4,8 @@ class Curl extends ExtensionsBase{
 	protected $userAgent = null;
 	protected $cookie = null;
 	
+	protected $ch = '';
+	
 	protected $default = array(
 		'data'=> array(),
 		'type'=> 'get',
@@ -49,39 +51,43 @@ class Curl extends ExtensionsBase{
 		$params = array_merge($this->default, $params);
 		$ip = $this->createIp();
 
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_TIMEOUT, $params['timeout']);
-		curl_setopt($ch, CURLOPT_REFERER, $params['referer']);
-		curl_setopt($ch, CURLOPT_HEADER, $params['header']);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, $params['transfer']);
-		curl_setopt($ch, CURLOPT_USERAGENT, $this->createAgent());
-    curl_setopt($ch, CURLOPT_HTTPHEADER , array('X-FORWARDED-FOR:'.$ip, 'CLIENT-IP:'.$ip));
+		$this->ch = curl_init($url);
+		$this->setOption(CURLOPT_TIMEOUT, $params['timeout']);
+		$this->setOption(CURLOPT_REFERER, $params['referer']);
+		$this->setOption(CURLOPT_HEADER, $params['header']);
+		$this->setOption(CURLOPT_RETURNTRANSFER, $params['transfer']);
+		$this->setOption(CURLOPT_USERAGENT, $this->createAgent());
+    $this->setOption(CURLOPT_HTTPHEADER , array('X-FORWARDED-FOR:'.$ip, 'CLIENT-IP:'.$ip));
 
     if(true == $params['useCookie']) {
-			curl_setopt($ch, CURLOPT_COOKIEFILE, $this->createCookie());
-			curl_setopt($ch, CURLOPT_COOKIEJAR, $this->createCookie());
+			$this->setOption(CURLOPT_COOKIEFILE, $this->createCookie());
+			$this->setOption(CURLOPT_COOKIEJAR, $this->createCookie());
 		}
 		
 		if(true == $params['https']) {
-			// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-			// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+			// $this->setOption($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			// $this->setOption($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 			
 			// 证书地址： http://curl.haxx.se/ca/cacert.pem
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-			curl_setopt($ch, CURLOPT_CAINFO, Yii::app()->basePath.'/../source/cacert.pem');
+			$this->setOption(CURLOPT_SSL_VERIFYPEER, TRUE);
+			$this->setOption(CURLOPT_CAINFO, Yii::app()->basePath.'/../source/cacert.pem');
 		}
 
 		if('post' == strtolower($params['type'])) {
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $params['data']);
+			$this->setOption(CURLOPT_POST, TRUE);
+			$this->setOption(CURLOPT_POSTFIELDS, $params['data']);
 		} else {
-			curl_setopt($ch, CURLOPT_HTTPGET, 1);
+			$this->setOption(CURLOPT_HTTPGET, TRUE);
 		}
 
-		$contents = curl_exec($ch);
-		curl_close($ch);
+		$contents = curl_exec($this->ch);
+		curl_close($this->ch);
 
 		return $contents;
+	}
+	
+	public function setOption($key, $value) {
+		curl_setopt($this->ch, $key, $value);
 	}
 	
 	// 创建 访问IP

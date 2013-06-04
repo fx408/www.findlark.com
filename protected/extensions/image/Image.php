@@ -1,14 +1,37 @@
 <?php
-class Image extends ExtensionsBase{
-	public $imgList;
-	public $allowExts = array('jpg', 'gif', 'png', 'jpeg');
+class Image{
+	protected $imgList;
+	protected $allowExts = array('jpg', 'gif', 'png', 'jpeg');
+	private static $_models = array();
+	
+	// 缩略图尺寸
+	protected $thumbWidth = 100;
+	protected $thumbHeight =100;
+	
+	// 图片尺寸
+	protected $imgWidth = 0;
+	protected $imgHeight = 0;
+
+	// Imagick 对象
+	protected $img;
 	
 	public static function model($className = __CLASS__) {
 		if (!class_exists('Imagick')) {
 			throw new Exception('Must load the Imagick extension');
 		}
 		
-		return parent::model($className);
+		if(!isset(self::$_models[$className])) {
+			self::$_models[$className] = new $className();
+		}
+		return self::$_models[$className];
+	}
+	
+	public function init($file) {
+		$this->fileExists($file);
+		$this->img = new Imagick($file);
+		
+		$this->imgWidth = $this->img->getImageWidth();
+		$this->imgHeight = $this->img->getImageHeight();
 	}
 	
 	/*
@@ -83,5 +106,9 @@ class Image extends ExtensionsBase{
 		
 		$file = $dir.$name;
 		if(file_exists($file)) unlink($file);
+	}
+	
+	public function __destruct() {
+		if($this->img) $this->img->destroy();
 	}
 }

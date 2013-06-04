@@ -16,6 +16,7 @@ global.mysqlClient = mysql.createConnection(config.mysql);
 mysqlClient.on('error', function(err) {
   console.log(err);
 });
+
 setInterval(function(){
 	myClient.ping();
 },60000);

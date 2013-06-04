@@ -8,6 +8,8 @@
 		<meta name="application-name" content="findlark">
 		<meta name="msapplication-starturl" content="http://www.findlark.com/">
 		
+		<meta property="qc:admins" content="62073576776616441236375" />
+		
 		<link rel="stylesheet" type="text/css" href="/static/css/public.css">
 		<link rel="stylesheet" type="text/css" href="/static/css/<?php echo $this->id;?>.css">
 		
