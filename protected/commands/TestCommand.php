@@ -5,22 +5,65 @@ class TestCommand extends CConsoleCommand {
 		set_time_limit(0);
 		$start = microtime(true);
 		
-		$img = Yii::app()->basePath.'/../static/test.jpg';
-		$img =Yii::app()->basePath.'/../static/captcha.png';
-		ImageCanny::model()->getEdge($img);
-		//$f1 = ImageHistFeature::model()->getFeature($img);
 		
-		//$img = Yii::app()->basePath.'/../static/QXOOWHQ.jpg';
-		//$img = Yii::app()->basePath.'/../static/Zhuoku085-cut.jpg';
-		//$f2 = ImageHistFeature::model()->getFeature($img);
+		// 生成二值图像
+		$dir = Yii::app()->basePath.'/../static/discuz';
+		$images = scandir($dir);
+		foreach($images as $img) {
+			$img = $dir.'/'.$img;
+			if(is_file($img) && preg_match("#.(png|jpg|gif)$#", $img)) {
+				//ImageCut::model()->cutImage($img, false);
+				//ImageColor::model()->get($img);
+				//ImageCanny::model()->getEdge($img, 3);
+			}
+		}
 		
-		//$sim = Sim::get($f1, $f2);
+		// $img = Yii::app()->basePath.'/../static/discuz/evck.png'; // 5142, 0438, 9320, 8466, 8277, 4986, 
+		/*
+		 c94m
+		*/
+		//ImageColor::model()->get($img);
 		
-		//echo $sim." \n";
+		// 验证码识别
+		/*
+		$img = Yii::app()->basePath.'/../static/discuz_2/cmjc.jpg';
+		ImageCut::model()->cutImage($img, false);
+		ImageCut::model()->thumb();
+		ImageCut::model()->compare();
+		*/
 		
-		$gray = ImageTwoValue::model()->getValue($img);
+		// Canny 算法边缘识别
+		$img = Yii::app()->basePath.'/../static/pic_300.jpg';
+		ImageCanny::model()->getEdge($img, 1.8);
+		
+		// 相似图片比较
+		/*
+		$img = Yii::app()->basePath.'/../static/pic.jpg';
+		$f1 = ImageHistFeature::model()->getFeature($img);
+		
+		$img = Yii::app()->basePath.'/../static/112.jpg';
+		$f2 = ImageHistFeature::model()->getFeature($img);
+		
+		$sim = Sim::get($f1, $f2);
+		
+		echo $sim." \n";
+		*/
+		//$gray = ImageTwoValue::model()->getValue($img);
 		
 		printf("Time: %f", microtime(true)-$start);
+	}
+	
+	public $n = 5;
+	public function actionEach() {
+		$this->_each();
+	}
+	
+	public function _each() {
+		$this->n--;
+		if($this->n > 0) {
+			echo $this->n;
+			$this->_each();
+		}
 	}
 	
 	public function actionIndex2() {

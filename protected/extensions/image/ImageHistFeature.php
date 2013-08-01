@@ -13,6 +13,7 @@ class ImageHistFeature extends Image{
 
 	public function getFeature($file) {
 		$this->init($file);
+		//$this->img->thumbnailImage(40, 40);
 		return $this->getImageFeature();
 	}
 
@@ -39,16 +40,25 @@ class ImageHistFeature extends Image{
 	 * 从而得到4*4*4 = 64 种组合
 	 */
 	protected function getImageHistogram() {
-		$histogram = array('r'=> array(0,0,0,0), 'g'=> array(0,0,0,0), 'b'=> array(0,0,0,0));
+		$histogram = array('r'=> array(), 'g'=> array(), 'b'=> array());
+		
+		$n = 32;
+		$m = floor(256/$n);
+		
+		foreach($histogram as &$item) {
+			for($i = 0; $i < $m; $i++) {
+				$item[$i] = 0;
+			}
+		}
 
 		$pixels = $this->img->getImageHistogram();
 		foreach($pixels as $p) {
 			$rgb = $p->getColor();
 			$colorCount = $p->getColorCount();
 
-			$histogram['r'][floor($rgb['r']/64)] += $colorCount;
-			$histogram['g'][floor($rgb['g']/64)] += $colorCount;
-			$histogram['b'][floor($rgb['b']/64)] += $colorCount;
+			$histogram['r'][floor($rgb['r']/$n)] += $colorCount;
+			$histogram['g'][floor($rgb['g']/$n)] += $colorCount;
+			$histogram['b'][floor($rgb['b']/$n)] += $colorCount;
 		}
 
 		return $histogram;

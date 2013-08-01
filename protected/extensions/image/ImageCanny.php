@@ -10,11 +10,12 @@ class ImageCanny extends Image{
 		return parent::model($className);
 	}
 
-	public function getEdge($file) {
+	public function getEdge($file, $revise = 0) {
 		$this->init($file);
 		
 		$this->imgData = ImageProcess::model()->createGrayImage($this->img);
-		$this->check();
+		
+		$this->check($revise);
 	}
 
 	/*
@@ -27,8 +28,9 @@ class ImageCanny extends Image{
 		$M = array(); //梯度幅值
 		$T = array(); //梯度方向
 
-		$filter = Gauss::model(array($this->imgData, $this->imgWidth, $this->imgHeight), 0.4)->twoFilter();
 
+		$filter = Gauss::model(array($this->imgData, $this->imgWidth, $this->imgHeight), 0.4)->twoFilter();
+		
 		//计算x,y方向的偏导数
 		for($y=0; $y < ($this->imgHeight - 1); $y++) {
 			for($x = 0; $x < ($this->imgWidth - 1); $x++) {
@@ -164,9 +166,9 @@ class ImageCanny extends Image{
 	}
 
 	// check
-	public function check() {
+	public function check($revise) {
 		list($M, $N) = $this->notMaxValue();
-
+		
 		// 计算高、低两个阈值
 		$dRatHigh = 0.79; // 0.79
 		$dRatLow = 0.5;
@@ -188,8 +190,9 @@ class ImageCanny extends Image{
 		$dThrHigh = $M_sort[$key];
 		*/
 		
+		$revise = max(1, $revise);
 		$M_count = count($M_sort);
-		$avg = round(array_sum($M_sort)/$M_count);
+		$avg = round(array_sum($M_sort)/$M_count/$revise);
 		$dThrHigh = Otsu::threshold($M) * $dRatHigh;
 		echo "Otsus threshold: $dThrHigh \n";
 		
@@ -199,6 +202,7 @@ class ImageCanny extends Image{
 		printf("avg: %d \n", $avg);
 		//printf("middle: %d \n", $middle);
 		printf("count: %d \n", $M_count);
+		printf("sum: %d \n", array_sum($M_sort));
 		printf("high: %d,  low: %d \n", $dThrHigh, $dThrLow);
 		
 		//print_r($M_sort);
@@ -209,7 +213,7 @@ class ImageCanny extends Image{
 				
 				if(($N[$key]==128) && ($M[$key] >= $dThrHigh)) {
 					$N[$key] = 255;
-					$this->TraceEdge($i, $j, $dThrLow, $N, $M);
+					$N = $this->TraceEdge($i, $j, $dThrLow, $N, $M);
 				}
 			}
 		}
@@ -225,12 +229,13 @@ class ImageCanny extends Image{
 		}
 		
 		//$this->outputImage($N);
-		$this->clear($N);
+		$N = $this->clear($N);
 		$this->outputImage($N);
+		unset($N);
 	}
 	
 	// 降噪
-	public function clear(&$N) {
+	public function clear($N) {
 		/* 计算某点周围8个点的值，若全为0，则该点为噪点
 		 * 1  2  3
 		 * 4  C  5
@@ -263,9 +268,11 @@ class ImageCanny extends Image{
 				if($c==0) $N[$index] = 0;
 			}
 		}
+		
+		return $N;
 	}
 
-	public function TraceEdge($y, $x, $nThrLow, &$N, $M) {
+	public function TraceEdge($y, $x, $nThrLow, $N, $M) {
 		$continue = true;
 		$count = 0;
 		$xNum = array(1,1,0,-1,-1,-1,0,1);
@@ -293,6 +300,7 @@ class ImageCanny extends Image{
 				}
 			}
 		}
+		return $N;
 	}
 
 	// 从 RGB 数据生成图片

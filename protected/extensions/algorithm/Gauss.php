@@ -2,25 +2,17 @@
 /*
  * 对灰度 图像数据的 高斯滤波
  */
-class Gauss{
+class Gauss extends AlgorithmBase{
 	protected $sigma = 0;	// 高斯函数的标准差
 	protected $size = 0; // 滤波窗口的大小
 	protected $center = 0; 	// 滤波窗口中心的索引
 
-	protected $imgData = array(); // 灰度图像数据
-	protected $imgWidth = 0; // 高度
-	protected $imgHeight = 0; // 宽度
-	
 	protected $pi = 3.14159;
 	
-	private static $_model = null;
-	public static function model($img = null, $sigma = 0.4) {
-		if(self::$_model==null) {
-			self::$_model = new self;
-			if(!empty($img)) self::$_model->init($img, $sigma);
-		}
-
-		return self::$_model;
+	public static function model($img = null, $sigma = 0.4, $className = __CLASS__) {
+		$model = parent::model($className, $img);
+		if(!$model->sigma) $model->initParams($sigma);
+		return $model;
 	}
 
 	/*
@@ -28,18 +20,10 @@ class Gauss{
 	 * 设置高斯 函数的参数
 	 * 获取图像参数
 	 */
-	public function init($img, $sigma = 0.4) {
-		$this->imgData = $img[0];
-		$this->imgWidth = $img[1];
-		$this->imgHeight = $img[2];
-
+	public function initParams($sigma = 0.4) {
 		$this->sigma = min(max(0, $sigma), 1);
 		$this->size = 1 + 2 * ceil(3 * $this->sigma);
 		$this->center = floor($this->size / 2);
-	}
-	
-	protected function checkInit() {
-		if(empty($this->imgData)) throw new Exception("Please init!");
 	}
 
 	/* 一维高斯滤波系数

@@ -39,8 +39,8 @@ class ToolController extends Controller {
 	
 	public function actionNovel() {
 		$books = array(
-			'http://read.qidian.com/BookReader/2647164.aspx',
-			'http://read.qidian.com/BookReader/2291879.aspx'
+			'http://read.qidian.com/BookReader/2291879.aspx',
+			'http://read.qidian.com/BookReader/2653586.aspx',
 		);
 		
 		foreach($books as $url) {
@@ -58,24 +58,8 @@ class ToolController extends Controller {
 		if($m && isset($match[1])) print_r(array_slice($match[1], -5));
 	}
 	
-	public function actionTest() {
-		$pic_original = Yii::app()->basePath.'/../static/QXOOWHQ.jpg';
-		$pic_cut = Yii::app()->basePath.'/../static/QXOOWHQ_cut.jpg';
-		$pic_small = Yii::app()->basePath.'/../static/QXOOWHQ_cut.jpg';
-		
-		$hash_original = ImageHash::model()->getImageHash($pic_original);
-		$hash_cut = ImageHash::model()->getImageHash($pic_cut);
-		$pic_small = ImageHash::model()->getImageHash($pic_small);
-		
-		echo '<pre>';
-		//print_r($hash_original);
-		print_r($hash_cut);
+	public function actionNod32() {
+		$url = 'http://www.zolsky.com/killsoftware/sdsoft/NOD32/nod32_id.htm';
+		echo Curl::model()->request($url);
 	}
-	
-	public function actionCanny() {
-		$img = Yii::app()->basePath.'/../static/test.jpg';
-		ImageCanny::model()->run($img);
-		
-	}
-	
 }

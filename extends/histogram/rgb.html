@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style>
+			.slider-out{width:300px; margin-left:10px;}
+			.slider{margin:8px 0px;}
+			
+			#color_rand, #color{width:100px; height:100px; float:left; cursor:pointer}
+		</style>
+	</head>
+	
+	<body>
+		<div class="slider-out">
+			R: <span>0</span>
+			<div class="slider"></div>
+			G: <span>0</span>
+			<div class="slider"></div>
+			B: <span>0</span>
+			<div class="slider"></div>
+		</div>
+		
+		<div>
+			<div id="color_rand"></div>
+			<div id="color"></div>
+		</div>
+		
+		<div>
+			<button id="refresh">刷新</button>
+		</div>
+		
+		<link rel="stylesheet" href="./jquery-ui-1.9.2.custom/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" />
+    <script src="./jquery-1.7.1.min.js"></script>
+    <script src="./jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js"></script>
+		<script type="text/javascript">
+			var rgb = {r:0, g:0, b:0},
+				rgbKey = {0:'r', 1:'g', 2:'b'},
+				randRGB = {r:0, g:0, b:0};
+			
+			function showColor(obj, rgb) {
+				$(obj).css("background-color", "rgb("+rgb.r+", "+rgb.g+", "+rgb.b+")");
+			}
+			
+			function showRGB(obj, rgb) {
+				$(obj).html(rgb.r+", "+rgb.g+", "+rgb.b);
+			}
+			
+			function randColor(){
+				for(var k in randRGB) {
+					randRGB[k] = Math.round( Math.random()*255 );
+				}
+				showColor("#color_rand", randRGB);
+			}
+			
+			$(function() {
+				$(".slider").each(function(i) {
+					var k = rgbKey[i];
+					$(this).slider({
+				  	value: 0,
+				  	min: 0,
+				  	max: 255,
+				  	step: 1,
+				  	slide: function(event, ui) {
+				  		rgb[k] = ui.value;
+				  		$(".slider:eq("+i+")").prev().html(ui.value);
+				  	}
+				  });
+				});
+				
+				$("#color_rand").click(function() {
+					showRGB(this, randRGB);
+				});
+				$("#color").click(function() {
+					showColor(this, rgb);
+				});
+				$("#refresh").click(function() {
+					randColor();
+					showColor("#color", {r:255, g:255, b:255});
+					$("#color_rand").html("");
+				});
+				
+				randColor();
+			});
+		</script>
+	</body>
+</html>

@@ -13,14 +13,28 @@ class ImageTwoValue extends Image{
 	public function getValue($file) {
 		$this->init($file);
 		
+		
 		//$this->img->thumbnailImage($this->thumbWidth, $this->thumbHeight);
-
-		return $this->getTwoValue();
+		
+		$imageData = $this->getTwoValue();
+		
+		ImageCut::model()->imgHeight = $this->imgHeight;
+		ImageCut::model()->imgWidth = $this->imgWidth;
+		
+		ImageCut::model()->cut($imageData);
+		ImageCut::model()->thumb();
+		ImageCut::model()->compare();
+		
+		//return $this->getTwoValue();
 	}
 
 	// 转换为二值图像
 	public function getTwoValue() {
 		$imageData = ImageProcess::model()->createGrayImage($this->img);
+		
+		//$outImageData = WaveletTrans::model(array($imageData, $this->imgWidth, $this->imgHeight))->BasicWaveletTrans();
+		//ImageProcess::model()->outputImage($outImageData, $this->imgWidth, $this->imgHeight);
+		//exit();
 		$threshold = Otsu::threshold($imageData);
 
 		echo "threshold: ".$threshold." \n";
@@ -29,10 +43,21 @@ class ImageTwoValue extends Image{
 		}
 		$edgeData = $this->edgeTrace($imageData);
 		
-		ImageProcess::model()->outputImage($imageData, $this->imgWidth, $this->imgHeight);
-		ImageProcess::model()->outputImage($edgeData, $this->imgWidth, $this->imgHeight);
+		//ImageProcess::model()->outputImage($imageData, $this->imgWidth, $this->imgHeight);
+		//ImageProcess::model()->outputImage($this->clear($imageData), $this->imgWidth, $this->imgHeight);
 		return $imageData;
 	}
+	
+	public $direction = array(
+		array(-1,-1),
+		array(-1, 0),
+		array(-1, 1),
+		array(0, -1),
+		array(0,  1),
+		array(1, -1),
+		array(1,  0),
+		array(1,  1)
+	);
 	
 	/* 二值图像边缘提取
 	 * 计算某点周围8个点的值，若有其中一个为 255 则该点为边界点
@@ -42,26 +67,16 @@ class ImageTwoValue extends Image{
 	 */
 	public function edgeTrace($imageData) {
 		$imgDataOut = array_fill(0, $this->imgHeight*$this->imgWidth, 0);
-		$direction = array(
-			array(-1,-1),
-			array(-1, 0),
-			array(-1, 1),
-			array(0, -1),
-			array(0,  1),
-			array(1, -1),
-			array(1,  0),
-			array(1,  1)
-		);
 		
 		//循环变量，图像坐标
-		for($i = 0; $i < $this->imgHeight; $i++) {
-			for($j = 0; $j < $this->imgWidth; $j++) {
+		for($i = 1; $i < ($this->imgHeight-1); $i++) {
+			for($j = 1; $j < ($this->imgWidth-1); $j++) {
 				$index = $i * $this->imgWidth + $j;
 				if($imageData[$index] == 255) continue;
 				
-				foreach($direction as $item) {
+				foreach($this->direction as $item) {
 					$point = $index + $item[0] * $this->imgWidth + $item[1];
-					if($imageData[$point] == 255) {
+					if($imageData[$point] == 0) {
 						$imgDataOut[$index] = 255;
 						break;
 					}
@@ -70,5 +85,27 @@ class ImageTwoValue extends Image{
 		}
 		
 		return $imgDataOut;
+	}
+	
+	public function clear($imageData) {
+		
+		for($i = 1; $i < ($this->imgHeight-1); $i++) {
+			for($j = 1; $j < ($this->imgWidth-1); $j++) {
+				$index = $i * $this->imgWidth + $j;
+				if($imageData[$index] == 255) continue;
+				
+				$count = 0;
+				foreach($this->direction as $item) {
+					$point = $index + $item[0] * $this->imgWidth + $item[1];
+					if($imageData[$point] == 0) {
+						$count++;
+					}
+				}
+				
+				if($count < 3) $imageData[$index] = 255;
+			}
+		}
+		
+		return $imageData;
 	}
 }

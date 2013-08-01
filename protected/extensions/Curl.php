@@ -117,8 +117,10 @@ class Curl extends ExtensionsBase{
 	// 创建 cookie 临时文件
 	public function createCookie($refresh = false) {
 		if(empty($this->cookie) || $refresh) {
-			$this->cookie = $this->cookieDir.'/'.tempnam($baseDir, 'cookie');
+			$this->cookie = tempnam($baseDir, 'cookie');
 		}
+		
+		var_dump($this->cookie);
 		
 		return $this->cookie;
 	}

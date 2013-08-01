@@ -37,7 +37,8 @@ return array(
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
 		'sch',
-		'schAdmin'
+		'schAdmin',
+		'douban',
 	),
 
 	// application components
@@ -70,7 +71,7 @@ return array(
 		
 		'redis'=>array(
 			'class'=>'URedis',
-			'host'=>'192.168.137.105',
+			'host'=>'127.0.0.1',
 			'port'=>'6379'
 		),
 		
