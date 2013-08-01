@@ -8,14 +8,20 @@ class DefaultController extends DoubanController {
 		$this->render('index');
 	}
 	
+	public function getBook($bookid, $titleSuffix = '') {
+		$data = Book::model()->findByPk($bookid);
+		if(empty($data)) throw new Exception('书籍已被删除或不存在!');
+		
+		$data = CJSON::decode($data->content, false);
+		$this->title = $data->title.$titleSuffix;
+		$this->bookid = $data->bookid;
+		
+		return $data;
+	}
+	
 	// 详细
 	public function actionBook($id) {
-		$request = Yii::app()->request;
-		
-		$data = Book::model()->findByPk($id);
-		if(!empty($data)) $data = CJSON::decode($data->content, false);
-		
-		$this->title = $data->title;
+		$data = $this->getBook($id);
 		
 		$this->render('book', array('data'=> $data));
 	}
@@ -35,9 +41,7 @@ class DefaultController extends DoubanController {
 	
 	// 读书笔记
 	public function actionNoteList($bookid) {
-		$book = Book::model()->findByPk($bookid);
-		$book = CJSON::decode($book->content, false);
-		$this->title = $book->title.' - 笔记';
+		$book = $this->getBook($bookid, ' - 笔记');
 		
 		$url = sprintf("http://api.douban.com/v2/book/%d/annotations", $book->bookid);
 		$note = Curl::model()->request($url);
@@ -51,9 +55,7 @@ class DefaultController extends DoubanController {
 	
 	// 笔记详细
 	public function actionNote($bookid, $noteid) {
-		$book = Book::model()->findByPk($bookid);
-		$book = CJSON::decode($book->content, false);
-		$this->title =  $book->title.' - 笔记';
+		$book = $this->getBook($bookid, ' - 笔记');
 		
 		$url = sprintf("http://api.douban.com/v2/book/annotation/%s", $noteid);
 		$note = Curl::model()->request($url);
@@ -65,9 +67,7 @@ class DefaultController extends DoubanController {
 	
 	// 试读详细
 	public function actionReading($bookid, $id) {
-		$book = Book::model()->findByPk($bookid);
-		$book = CJSON::decode($book->content, false);
-		$this->title =  $book->title.' - 试读';
+		$book = $this->getBook($bookid, ' - 试读');
 		
 		$url = sprintf('http://book.douban.com/reading/%d/', intval($id));
 		$content = Curl::model()->request($url);
